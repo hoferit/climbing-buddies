@@ -11,6 +11,13 @@ import {
   FormMessage,
 } from '@/components/ui/Form';
 import { Input } from '@/components/ui/Input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/Select';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
@@ -49,9 +56,9 @@ const formSchema = z.object({
     .min(2, {
       message: 'E-Mail must be at least 2 characters.',
     }),
-  climbinglevel: z.number({
+  climbinglevel: z.string({
     required_error: 'Climbing Level is required',
-    invalid_type_error: 'Climbing Level must be a number',
+    invalid_type_error: 'Climbing Level must be a string',
   }),
 });
 
@@ -64,7 +71,7 @@ export function RegistrationForm() {
       firstname: '',
       lastname: '',
       email: '',
-      climbinglevel: 1,
+      climbinglevel: '',
     },
   });
 
@@ -128,8 +135,32 @@ export function RegistrationForm() {
             <FormItem>
               <FormLabel>Last Name</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input type="email" {...field} />
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="climbinglevel"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Last Name</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select the difficulty range you currently climb in" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="v1-v3">Beginners(V1-V3)</SelectItem>
+                  <SelectItem value="v4-v6">Intermediate(V4-V6)</SelectItem>
+                  <SelectItem value="v7-v9">Advanced(V7-V9)</SelectItem>
+                  <SelectItem value="v10-v12">Pro(v10-V12)</SelectItem>
+                </SelectContent>
+              </Select>
+
               <FormMessage />
             </FormItem>
           )}

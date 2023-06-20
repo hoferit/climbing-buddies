@@ -9,8 +9,11 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
-    }
+      "@/*": [
+        "./*"
+      ]
+    },
+    "jsx": "preserve"
   },
   "include": [
     "**/.eslintrc.cjs",
