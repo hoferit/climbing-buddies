@@ -1,0 +1,82 @@
+// schema.prisma
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["jsonProtocol"]
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL") // uses connection pooling
+  // directUrl         = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  // shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations, also for cloud storage
+}
+
+model User {
+  id                   Int                @id @default(autoincrement())
+  username             String
+  firstName            String
+  lastName             String
+  email                String             @unique
+  passwordHash         String
+  climbingLevel        Int
+  profilePictureUrl    String?
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+  deletedAt            DateTime?
+  eventsOrganised      Event[]
+  initiatedFriendships Friendship[]       @relation("FriendshipRequests")
+  receivedFriendships  Friendship[]       @relation("FriendshipResponses")
+  eventParticipants    EventParticipant[] @relation("UserEvents")
+}
+
+model Friendship {
+  userId   Int
+  friendId Int
+  user     User @relation("FriendshipRequests", fields: [userId], references: [id])
+  friend   User @relation("FriendshipResponses", fields: [friendId], references: [id])
+
+  @@id([userId, friendId])
+}
+
+model Gym {
+  id       Int     @id @default(autoincrement())
+  name     String
+  location String
+  events   Event[]
+}
+
+model Style {
+  id     Int     @id @default(autoincrement())
+  name   String
+  events Event[]
+}
+
+model Event {
+  id                Int                @id @default(autoincrement())
+  title             String
+  description       String
+  organiserId       Int
+  styleId           Int
+  startTime         DateTime
+  endTime           DateTime
+  gymId             Int
+  gymName           String
+  gymLocation       String
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  deletedAt         DateTime?
+  organiser         User               @relation(fields: [organiserId], references: [id])
+  style             Style              @relation(fields: [styleId], references: [id])
+  gym               Gym                @relation(fields: [gymId], references: [id])
+  eventParticipants EventParticipant[] @relation("EventUsers")
+}
+
+model EventParticipant {
+  userId  Int
+  eventId Int
+  user    User  @relation("UserEvents", fields: [userId], references: [id])
+  event   Event @relation("EventUsers", fields: [eventId], references: [id])
+
+  @@id([userId, eventId])
+}
