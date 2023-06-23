@@ -6,7 +6,7 @@ type UserWithPasswordHash = {
   id: number;
   username: string;
   passwordHash: string;
-  email?: string;
+  email: string;
 };
 
 export const getUserWithPasswordHashByUsername = async (
@@ -20,7 +20,7 @@ export const getUserWithPasswordHashByUsername = async (
       id: true,
       username: true,
       passwordHash: true,
-      email: false,
+      email: true,
     },
   });
 
@@ -35,22 +35,28 @@ export const getUserByUsername = async (username: string) => {
     select: {
       id: true,
       username: true,
+      email: true,
     },
   });
 
   return user;
 };
 
-export const createUser = async (username: string, passwordHash: string) => {
+export const createUser = async (
+  username: string,
+  passwordHash: string,
+  email: string,
+) => {
   const user = await prisma.user.create({
     data: {
       username: username.toLowerCase(),
       passwordHash: passwordHash,
+      email: email,
     },
     select: {
       id: true,
       username: true,
-      email: false,
+      email: true,
     },
   });
 

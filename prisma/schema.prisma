@@ -17,7 +17,7 @@ model User {
   username             String             @unique
   firstName            String?
   lastName             String?
-  email                String?             @unique
+  email                String             @unique
   passwordHash         String
   climbingLevel        Int?
   profilePictureUrl    String?
