@@ -9,15 +9,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { GraphQlResponseBody } from '../register/route';
 
-type Error = {
-  error: string;
+export type LoginResponseBodyPost = {
+  user: User;
 };
-
-export type LoginResponseBodyPost =
-  | {
-      user: User;
-    }
-  | Error;
 
 const userSchema = z.object({
   username: z.string().min(1),

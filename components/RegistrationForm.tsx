@@ -1,3 +1,5 @@
+// react-hook-form needs following format {errors.username?.message}
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 'use client';
 
 import { RegisterResponseBodyPost } from '@/app/api/(auth)/register/route';
