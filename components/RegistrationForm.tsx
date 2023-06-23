@@ -1,172 +1,207 @@
 'use client';
 
-import { Button } from '@/components/ui/Button';
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/Form';
-import { Input } from '@/components/ui/Input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/Select';
+import { RegisterResponseBodyPost } from '@/app/api/(auth)/register/route';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Link from 'next/link';
-import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-const formSchema = z.object({
-  username: z
-    .string({
-      required_error: 'Username is required',
-      invalid_type_error: 'Username must be a string',
-    })
-    .min(2, {
-      message: 'Username must be at least 2 characters.',
-    }),
-  firstname: z
-    .string({
-      required_error: 'First Name is required',
-      invalid_type_error: 'First Name must be a string',
-    })
-    .min(2, {
-      message: 'First Name must be at least 2 characters.',
-    }),
-  lastname: z
-    .string({
-      required_error: 'Last Name is required',
-      invalid_type_error: 'Last Name must be a string',
-    })
-    .min(2, {
-      message: 'Last Name must be at least 2 characters.',
-    }),
-  email: z
-    .string({
-      required_error: 'email Level is required',
-      invalid_type_error: 'email must be a string',
-    })
-    .min(2, {
-      message: 'E-Mail must be at least 2 characters.',
-    }),
-  climbinglevel: z.string({
-    required_error: 'Climbing Level is required',
-    invalid_type_error: 'Climbing Level must be a string',
-  }),
-});
+const formSchema = z
+  .object({
+    username: z.string().min(1, 'Username is required').max(100),
 
-export function RegistrationForm() {
-  // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      username: '',
-      firstname: '',
-      lastname: '',
-      email: '',
-      climbinglevel: '',
-    },
+    email: z.string().email('Invalid email').min(1, 'Email is required'),
+
+    password: z
+      .string()
+      .min(1, 'Password is required')
+      .min(8, 'Password must have more than 8 characters'),
+    confirmPassword: z.string().min(1, 'Password confirmation is required'),
+    terms: z.literal(true, {
+      errorMap: () => ({ message: 'You must accept the terms and conditions' }),
+    }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    path: ['confirmPassword'],
+    message: 'Passwords do not match',
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+type FormSchemaType = z.infer<typeof formSchema>;
+
+export function RegistrationForm() {
+  const router = useRouter();
+  async function registerData(data: FormSchemaType) {
+    const response = await fetch('/api/register', {
+      method: 'POST',
+      body: JSON.stringify({
+        username: data.username,
+        email: data.email,
+        password: data.password,
+      }),
+    });
+    if (response.ok) {
+      const responseData: RegisterResponseBodyPost = await response.json();
+      router.push(`/profile/${responseData.user.username}` as any);
+
+      router.refresh();
+    }
   }
 
+  const {
+    register,
+    handleSubmit,
+    watch,
+    getValues,
+    formState: { errors, isSubmitting },
+  } = useForm<FormSchemaType>({
+    resolver: zodResolver(formSchema),
+  });
+
+  const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
+    await registerData(data);
+  };
+
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="firstname"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>First Name</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="lastname"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Last Name</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Last Name</FormLabel>
-              <FormControl>
-                <Input type="email" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="climbinglevel"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Last Name</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select the difficulty range you currently climb in" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="v1-v3">Beginners(V1-V3)</SelectItem>
-                  <SelectItem value="v4-v6">Intermediate(V4-V6)</SelectItem>
-                  <SelectItem value="v7-v9">Advanced(V7-V9)</SelectItem>
-                  <SelectItem value="v10-v12">Pro(v10-V12)</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
+    <section className="bg-gray-50 dark:bg-gray-900">
+      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+              Create your account
+            </h1>
+            <form
+              className="space-y-4 md:space-y-6"
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <div>
+                <label
+                  htmlFor="username"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Your username
+                </label>
+                <input
+                  id="username"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
+                  placeholder="Your name"
+                  required={true}
+                  {...register('username')}
+                />
+                {errors.username && (
+                  <span className="text-red-800 block mt-2">
+                    {errors.username?.message}
+                  </span>
+                )}
+              </div>
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Your email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
+                  placeholder="name@company.com"
+                  required={true}
+                  {...register('email')}
+                />
+                {errors.email && (
+                  <span className="text-red-800 block mt-2">
+                    {errors.email?.message}
+                  </span>
+                )}
+              </div>
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Password
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  placeholder="••••••••"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
+                  {...register('password', {
+                    required: true,
+                  })}
+                />
+                {errors?.password?.type === 'required' && (
+                  <span className="text-red-800 block mt-2">
+                    This field is required
+                  </span>
+                )}
+                {errors.password && (
+                  <span className="text-red-800 block mt-2">
+                    {errors.password?.message}
+                  </span>
+                )}
+              </div>
+              <div>
+                <label
+                  htmlFor="confirmPassword"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Confirm password
+                </label>
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  placeholder="••••••••"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
+                  {...register('confirmPassword', { required: true })}
+                />
+                {watch('confirmPassword') !== watch('password') &&
+                getValues('confirmPassword') ? (
+                  <span className="text-red-800 block mt-2">
+                    Passwords don't match
+                  </span>
+                ) : null}
+              </div>
+              <div className="flex items-start">
+                <div className="flex items-center h-5">
+                  <input
+                    id="terms"
+                    aria-describedby="terms"
+                    type="checkbox"
+                    className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                    {...register('terms')}
+                  />
+                </div>
+                <div className="ml-3 text-sm">
+                  <label
+                    htmlFor="terms"
+                    className="font-light text-gray-500 dark:text-gray-300"
+                  >
+                    I accept the{' '}
+                    <a
+                      className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                      href="/"
+                    >
+                      Terms and Conditions
+                    </a>
+                  </label>
+                </div>
+              </div>
+              {errors.terms && (
+                <span className="text-red-800 block mt-2">
+                  {errors.terms?.message}
+                </span>
+              )}
+              <button
+                className="w-full bg-primary text-primary-foreground hover:bg-destructive border border-input focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                disabled={isSubmitting}
+              >
+                Create an account
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }

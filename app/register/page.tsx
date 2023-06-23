@@ -4,7 +4,9 @@ export default function RegisterPage() {
   return (
     <main>
       <h1>Register</h1>
-      <RegistrationForm />
+      <section className="md:container md:mx-auto">
+        <RegistrationForm />
+      </section>
     </main>
   );
 }

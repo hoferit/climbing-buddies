@@ -14,12 +14,12 @@ datasource db {
 
 model User {
   id                   Int                @id @default(autoincrement())
-  username             String
-  firstName            String
-  lastName             String
-  email                String             @unique
+  username             String             @unique
+  firstName            String?
+  lastName             String?
+  email                String?             @unique
   passwordHash         String
-  climbingLevel        Int
+  climbingLevel        Int?
   profilePictureUrl    String?
   createdAt            DateTime           @default(now())
   updatedAt            DateTime           @updatedAt
@@ -28,6 +28,15 @@ model User {
   initiatedFriendships Friendship[]       @relation("FriendshipRequests")
   receivedFriendships  Friendship[]       @relation("FriendshipResponses")
   eventParticipants    EventParticipant[] @relation("UserEvents")
+  sessions Session[] // each user can have multiple sessions
+}
+
+model Session {
+  id               Int      @id @default(autoincrement())
+  token            String   @unique
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId           Int
+  expire           DateTime
 }
 
 model Friendship {
