@@ -1,36 +1,27 @@
 import crypto from 'node:crypto';
 import { createSession } from '@/database/sessions';
-import { createUser, getUserByUsername } from '@/database/users';
+import { getUserWithPasswordHashByUsername } from '@/database/users';
 import { secureCookieOptions } from '@/utils/cookies';
 import { User } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { GraphQlResponseBody } from '../register/route';
 
-export type RegisterResponseBodyPost = {
-  user: User;
+type Error = {
+  error: string;
 };
 
-// Type for GraphQL response body
-export type GraphQlResponseBody =
-  | { user: { username: string; id: number } }
+export type LoginResponseBodyPost =
   | {
-      username: string;
-      password: string;
-      email: string;
+      user: User;
     }
-  | {
-      error: string;
-    }
-  | {
-      status: number;
-    };
+  | Error;
 
 const userSchema = z.object({
   username: z.string().min(1),
   password: z.string().min(1),
-  email: z.string().min(1),
 });
 
 export async function POST(
@@ -47,62 +38,50 @@ export async function POST(
     // console.log(result.error);
     return NextResponse.json(
       {
-        error: 'username or password or email missing',
+        error: 'username or password missing',
       },
       { status: 400 },
     );
   }
 
-  if (await getUserByUsername(result.data.username)) {
-    // zod send you details about the error
-    // console.log(result.error);
-    return NextResponse.json(
-      {
-        error: 'username is already used',
-      },
-      { status: 406 },
-    );
-  }
+  // 3. verify the user credentials
+  const userWithPasswordHash = await getUserWithPasswordHashByUsername(
+    result.data.username,
+  );
 
-  if (await getUserByUsername(result.data.email)) {
+  if (!userWithPasswordHash) {
     // zod send you details about the error
     // console.log(result.error);
     return NextResponse.json(
       {
-        error: 'email is already used',
+        error: 'user or password not valid',
       },
-      { status: 406 },
+      { status: 401 },
     );
   }
 
   // 3. hash the password
-  const passwordHash = await bcrypt.hash(result.data.password, 10);
-
-  // 4. store the credentials in the db
-  const newUser = await createUser(
-    result.data.username,
-    passwordHash,
-    result.data.email,
+  const isPasswordValid = await bcrypt.compare(
+    result.data.password,
+    userWithPasswordHash.passwordHash,
   );
 
-  if (!newUser) {
-    // zod send you details about the error
-    // console.log(result.error);
+  if (!isPasswordValid) {
     return NextResponse.json(
       {
-        error: 'Error creating the new user',
+        error: 'user or password not valid',
       },
-      { status: 500 },
+      { status: 401 },
     );
   }
 
   // We are sure the user is authenticated
 
-  // 5. Create a token
+  // 4. Create a token
   const token = crypto.randomBytes(100).toString('base64');
-  // 6. Create the session record
+  // 5. Create the session record
 
-  const session = await createSession(token, newUser.id);
+  const session = await createSession(token, userWithPasswordHash.id);
 
   if (!session) {
     return NextResponse.json(
@@ -113,15 +92,24 @@ export async function POST(
     );
   }
 
-  // 7. Send the new cookie in the headers
+  // 6. Send the new cookie in the headers
   cookies().set({
     name: 'sessionToken',
     value: session.token,
     ...secureCookieOptions,
   });
 
-  // 7. return the new user to the client
-  const handler = NextResponse.json({ user: newUser });
+  const handler = NextResponse.json(
+    {
+      user: {
+        username: userWithPasswordHash.username,
+        id: userWithPasswordHash.id,
+      },
+    },
+    {
+      status: 200,
+    },
+  );
 
   return handler as NextResponse<GraphQlResponseBody>;
 }
