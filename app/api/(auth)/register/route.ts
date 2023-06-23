@@ -81,8 +81,8 @@ export async function POST(
   // 4. store the credentials in the db
   const newUser = await createUser(
     result.data.username,
-    result.data.email,
     passwordHash,
+    result.data.email,
   );
 
   if (!newUser) {
