@@ -1,7 +1,17 @@
+import { getValidSessionByToken } from '@/database/sessions';
+import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { LogoutButton } from './LogoutButton';
 
-export default function Header() {
+export default async function Header() {
+  const sessionTokenCookie = cookies().get('sessionToken');
+  // 2. check if the sessionToken has a valid session
+  const session =
+    sessionTokenCookie &&
+    (await getValidSessionByToken(sessionTokenCookie.value));
+
+  // 3. Either redirect or render the login form
+
   return (
     <header>
       <nav className="flex items-center justify-between flex-wrap bg-primary p-6">
@@ -40,14 +50,25 @@ export default function Header() {
               className="lock mt-4 lg:inline-block lg:mt-0 text-secondary hover:text-secondary-foreground mr-4"
               href="/login"
             >
-              Login
+              Gyms
             </Link>
-            <Link
-              className="lock mt-4 lg:inline-block lg:mt-0 text-secondary hover:text-secondary-foreground mr-4"
-              href="/register"
-            >
-              Register
-            </Link>
+            {!session ? (
+              <Link
+                className="lock mt-4 lg:inline-block lg:mt-0 text-secondary hover:text-secondary-foreground mr-4"
+                href="/login"
+              >
+                Login
+              </Link>
+            ) : null}
+
+            {!session ? (
+              <Link
+                className="lock mt-4 lg:inline-block lg:mt-0 text-secondary hover:text-secondary-foreground mr-4"
+                href="/register"
+              >
+                Register
+              </Link>
+            ) : null}
           </div>
         </div>
         <div>
