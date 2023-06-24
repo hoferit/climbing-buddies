@@ -72,6 +72,14 @@ export default async function Header() {
           </div>
         </div>
         <div>
+          <Link
+            className="lock mt-4 lg:inline-block lg:mt-0 text-secondary hover:text-secondary-foreground mr-4"
+            href="/profile"
+          >
+            Profile
+          </Link>
+        </div>
+        <div>
           <LogoutButton />
         </div>
       </nav>

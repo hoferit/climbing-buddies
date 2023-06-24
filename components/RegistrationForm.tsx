@@ -1,5 +1,5 @@
 // react-hook-form needs following format {errors.username?.message}
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+// /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 'use client';
 
 import { RegisterResponseBodyPost } from '@/app/api/(auth)/register/route';
@@ -91,7 +91,7 @@ export function RegistrationForm() {
                 />
                 {errors.username && (
                   <span className="text-red-800 block mt-2">
-                    {errors.username?.message}
+                    {errors.username.message}
                   </span>
                 )}
               </div>
@@ -112,7 +112,7 @@ export function RegistrationForm() {
                 />
                 {errors.email && (
                   <span className="text-red-800 block mt-2">
-                    {errors.email?.message}
+                    {errors.email.message}
                   </span>
                 )}
               </div>
@@ -132,14 +132,14 @@ export function RegistrationForm() {
                     required: true,
                   })}
                 />
-                {errors?.password?.type === 'required' && (
+                {errors.password?.type === 'required' && (
                   <span className="text-red-800 block mt-2">
                     This field is required
                   </span>
                 )}
                 {errors.password && (
                   <span className="text-red-800 block mt-2">
-                    {errors.password?.message}
+                    {errors.password.message}
                   </span>
                 )}
               </div>
@@ -191,7 +191,7 @@ export function RegistrationForm() {
               </div>
               {errors.terms && (
                 <span className="text-red-800 block mt-2">
-                  {errors.terms?.message}
+                  {errors.terms.message}
                 </span>
               )}
               <button
