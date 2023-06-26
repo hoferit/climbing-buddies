@@ -1,5 +1,4 @@
 'use client';
-import { updateUserById } from '@/database/users';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { User } from '@prisma/client';
 import { enqueueSnackbar, SnackbarProvider } from 'notistack';
@@ -11,12 +10,14 @@ type ProfileInputs = {
   firstName: string;
   lastName: string;
   climbingLevel: string;
+  profilePictureUrl: string;
 };
 
 const schema = z.object({
   firstName: z.string(),
   lastName: z.string(),
   climbingLevel: z.string(),
+  profilePictureUrl: z.string(),
 });
 
 export function EditProfileForm() {
@@ -53,26 +54,31 @@ export function EditProfileForm() {
       setValue('firstName', userData.firstName || '');
       setValue('lastName', userData.lastName || '');
       setValue('climbingLevel', userData.climbingLevel || '');
+      setValue('profilePictureUrl', userData.profilePictureUrl || '');
     }
   }, [userData, setValue]);
 
   const onSubmit: SubmitHandler<ProfileInputs> = async (data) => {
     try {
-      if (userData !== null) {
-        const updatedUser = await updateUserById(userData.id, data);
+      const response = await fetch('/api/updateuser', {
+        method: 'PUT',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-        if (updatedUser) {
-          // Update was successful
-          enqueueSnackbar('Profile updated successfully!', {
-            variant: 'success',
-          });
-        } else {
-          // Handle error response
-          console.error('Error updating user');
-
-          // Inform user about error
-          enqueueSnackbar('Error updating profile!', { variant: 'error' });
-        }
+      if (response.ok) {
+        // Update was successful
+        enqueueSnackbar('Profile updated successfully!', {
+          variant: 'success',
+        });
+      } else {
+        // Handle error response
+        const errorData = await response.json();
+        console.error('Error updating user: ', errorData);
+        // Inform user about error
+        enqueueSnackbar('Error updating profile!', { variant: 'error' });
       }
     } catch (error) {
       console.error('Failed to update user: ', error);
@@ -141,6 +147,22 @@ export function EditProfileForm() {
                 {errors.climbingLevel && (
                   <span className="test-red-800 block mt-2">
                     {errors.climbingLevel.message}
+                  </span>
+                )}
+                <label
+                  htmlFor="profilepictureurl"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Profile Picture
+                </label>
+                <input
+                  id="profilepictureurl"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
+                  {...register('profilePictureUrl')}
+                />
+                {errors.profilePictureUrl && (
+                  <span className="test-red-800 block mt-2">
+                    {errors.profilePictureUrl.message}
                   </span>
                 )}
                 <button
