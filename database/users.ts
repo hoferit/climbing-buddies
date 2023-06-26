@@ -50,7 +50,7 @@ export const getUserById = async (id: number) => {
     select: {
       id: true,
       username: true,
-      email: true,
+      email: false,
       firstName: true,
       lastName: true,
       climbingLevel: true,
