@@ -8,14 +8,14 @@ import { ErrorResponseBody } from '../user/route';
 type UpdateUserBody = {
   firstName: string | null;
   lastName: string | null;
-  climbingLevel: number | null;
+  climbingLevel: string | null;
   profilePictureUrl: string | null;
 };
 
 const updateUserSchema = z.object({
   firstName: z.string().nullable(),
   lastName: z.string().nullable(),
-  climbingLevel: z.number().nullable(),
+  climbingLevel: z.string().nullable(),
   profilePictureUrl: z.string().nullable(),
 });
 
@@ -23,7 +23,7 @@ export type UpdateUserResponseBody = {
   user: UpdateUserBody;
 };
 
-export async function PATCH(
+export async function PUT(
   request: NextRequest,
 ): Promise<NextResponse<UpdateUserResponseBody | ErrorResponseBody>> {
   // 1. Check if the user is authenticated

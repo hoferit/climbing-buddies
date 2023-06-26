@@ -1,6 +1,7 @@
+'use client';
 import { userContext } from '@/utils/useuser'; // Import your UserContext
 import { zodResolver } from '@hookform/resolvers/zod';
-import { enqueueSnackbar } from 'notistack';
+import { enqueueSnackbar, SnackbarProvider } from 'notistack';
 import React, { useContext, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -8,13 +9,13 @@ import * as z from 'zod';
 type ProfileInputs = {
   firstName: string;
   lastName: string;
-  climbingLevel: number;
+  climbingLevel: string;
 };
 
 const schema = z.object({
   firstName: z.string(),
   lastName: z.string(),
-  climbingLevel: z.number(),
+  climbingLevel: z.string(),
 });
 
 export function EditProfileForm() {
@@ -33,13 +34,13 @@ export function EditProfileForm() {
     if (user) {
       setValue('firstName', user.firstName || '');
       setValue('lastName', user.lastName || '');
-      setValue('climbingLevel', user.climbingLevel || 0);
+      setValue('climbingLevel', user.climbingLevel || '');
     }
   }, [setValue, user]);
 
   const onSubmit: SubmitHandler<ProfileInputs> = async (data) => {
     try {
-      const response = await fetch('/api/user', {
+      const response = await fetch('/api/updateuser', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -69,76 +70,78 @@ export function EditProfileForm() {
   };
 
   return (
-    <section className="bg-primary-background dark:bg-gray-900">
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Create your account
-            </h1>
-            <form
-              className="space-y-4 md:space-y-6"
-              onSubmit={handleSubmit(onSubmit)}
-            >
-              <label
-                htmlFor="firstname"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+    <SnackbarProvider>
+      <section className="bg-primary-background dark:bg-gray-900">
+        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+          <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+            <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+              <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                Your Profile
+              </h1>
+              <form
+                className="space-y-4 md:space-y-6"
+                onSubmit={handleSubmit(onSubmit)}
               >
-                First Name:
-              </label>
-              <input
-                id="firstname"
-                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-                {...register('firstName')}
-              />
-              {errors.firstName && (
-                <span className="test-red-800 block mt-2">
-                  {errors.firstName.message}
-                </span>
-              )}
-              <label
-                htmlFor="lastname"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Last Name:
-              </label>
-              <input
-                id="lastname"
-                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-                {...register('lastName')}
-              />
-              {errors.lastName && (
-                <span className="test-red-800 block mt-2">
-                  {errors.lastName.message}
-                </span>
-              )}
-              <label
-                htmlFor="climbinglevel"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Climbing Level:
-              </label>
-              <input
-                id="climbinglevel"
-                type="number"
-                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-                {...register('climbingLevel')}
-              />
-              {errors.climbingLevel && (
-                <span className="test-red-800 block mt-2">
-                  {errors.climbingLevel.message}
-                </span>
-              )}
-              <button
-                className="w-full bg-primary text-secondary hover:bg-secondary hover:text-primary border border-input focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                disabled={isSubmitting}
-              >
-                Submit
-              </button>
-            </form>
+                <label
+                  htmlFor="firstname"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  First Name:
+                </label>
+                <input
+                  id="firstname"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
+                  {...register('firstName')}
+                />
+                {errors.firstName && (
+                  <span className="test-red-800 block mt-2">
+                    {errors.firstName.message}
+                  </span>
+                )}
+                <label
+                  htmlFor="lastname"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Last Name:
+                </label>
+                <input
+                  id="lastname"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
+                  {...register('lastName')}
+                />
+                {errors.lastName && (
+                  <span className="test-red-800 block mt-2">
+                    {errors.lastName.message}
+                  </span>
+                )}
+                <label
+                  htmlFor="climbinglevel"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Climbing Level:
+                </label>
+                <input
+                  id="climbinglevel"
+                  type="number"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
+                  {...register('climbingLevel')}
+                />
+                {errors.climbingLevel && (
+                  <span className="test-red-800 block mt-2">
+                    {errors.climbingLevel.message}
+                  </span>
+                )}
+                <button
+                  className="w-full bg-primary text-secondary hover:bg-secondary hover:text-primary border border-input focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                  disabled={isSubmitting}
+                >
+                  Submit
+                </button>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </SnackbarProvider>
   );
 }

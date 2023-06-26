@@ -1,5 +1,4 @@
 import { EditProfileForm } from '@/components/ProfileForm';
-import { UserProvider } from '@/utils/useuser';
 
 export default function profilePage() {
   return (
