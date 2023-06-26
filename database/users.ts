@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, User } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -60,6 +60,25 @@ export const getUserById = async (id: number) => {
 
   return user;
 };
+
+export async function updateUserById(
+  id: number,
+  data: Partial<User>,
+): Promise<User | null> {
+  const updatedUser = await prisma.user.update({
+    where: {
+      id: id,
+    },
+    data: {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      climbingLevel: data.climbingLevel,
+      profilePictureUrl: data.profilePictureUrl,
+    },
+  });
+
+  return updatedUser;
+}
 
 export const createUser = async (
   username: string,
