@@ -5,6 +5,7 @@ import { enqueueSnackbar, SnackbarProvider } from 'notistack';
 import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as z from 'zod';
+import ImageUpload from './ImageUpload';
 
 type ProfileInputs = {
   firstName: string;
@@ -44,6 +45,7 @@ export function EditProfileForm() {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<ProfileInputs>({
     resolver: zodResolver(schema),
@@ -96,7 +98,10 @@ export function EditProfileForm() {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Your Profile
               </h1>
-
+              <ImageUpload
+                onChange={(value) => setValue('profilePictureUrl', value)}
+                value={watch('profilePictureUrl') || ''}
+              />
               <form
                 className="space-y-4 md:space-y-6"
                 onSubmit={handleSubmit(onSubmit)}
@@ -150,22 +155,7 @@ export function EditProfileForm() {
                     {errors.climbingLevel.message}
                   </span>
                 )}
-                <label
-                  htmlFor="profilepictureurl"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Profile Picture
-                </label>
-                <input
-                  id="profilepictureurl"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-                  {...register('profilePictureUrl')}
-                />
-                {errors.profilePictureUrl && (
-                  <span className="test-red-800 block mt-2">
-                    {errors.profilePictureUrl.message}
-                  </span>
-                )}
+
                 <button
                   className="w-full bg-primary text-secondary hover:bg-secondary hover:text-primary border border-input focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                   disabled={isSubmitting}
