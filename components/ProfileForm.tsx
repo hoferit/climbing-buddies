@@ -1,5 +1,6 @@
 import { userContext } from '@/utils/useuser'; // Import your UserContext
 import { zodResolver } from '@hookform/resolvers/zod';
+import { enqueueSnackbar } from 'notistack';
 import React, { useContext, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -50,19 +51,20 @@ export function EditProfileForm() {
         // Update was successful
         const updatedUser = await response.json();
         console.log('Updated user: ', updatedUser);
-        // You can also use a notification or alert library to inform user about successful operation
-        // for example if you use notistack: enqueueSnackbar('Profile updated successfully!', { variant: 'success' });
+        enqueueSnackbar('Profile updated successfully!', {
+          variant: 'success',
+        });
       } else {
         // Handle error response
         const errorData = await response.json();
         console.error('Error updating user: ', errorData);
         // Inform user about error
-        // enqueueSnackbar('Error updating profile!', { variant: 'error' });
+        enqueueSnackbar('Error updating profile!', { variant: 'error' });
       }
     } catch (error) {
       console.error('Failed to update user: ', error);
       // Inform user about error
-      // enqueueSnackbar('Error updating profile!', { variant: 'error' });
+      enqueueSnackbar('Error updating profile!', { variant: 'error' });
     }
   };
 

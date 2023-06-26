@@ -1,11 +1,10 @@
-// react-hook-form needs following format {errors.username?.message}
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 'use client';
 
 import { LoginResponseBodyPost } from '@/app/api/(auth)/login/route';
 import { getSafeReturnToPath } from '@/utils/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
+import { enqueueSnackbar } from 'notistack';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -38,6 +37,12 @@ export function LoginForm(props: Props) {
       );
 
       router.refresh();
+    } else {
+      // Handle error response
+      const errorData = await response.json();
+      console.error('Error updating user: ', errorData);
+      // Inform user about error
+      enqueueSnackbar('Error logging in!', { variant: 'error' });
     }
   }
   const {
