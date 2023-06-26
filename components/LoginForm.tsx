@@ -33,7 +33,7 @@ export function LoginForm(props: Props) {
       const responseData: LoginResponseBodyPost = await response.json();
       router.push(
         getSafeReturnToPath(props.returnTo) ||
-          `/profile/${responseData.user.username}`,
+          (`/profile/${responseData.user.username}` as any), // FIX THIS TODO
       );
 
       router.refresh();
@@ -85,7 +85,7 @@ export function LoginForm(props: Props) {
                 />
                 {errors.username && (
                   <span className="text-red-800 block mt-2">
-                    {errors.username?.message}
+                    {errors.username.message}
                   </span>
                 )}
               </div>
@@ -106,14 +106,14 @@ export function LoginForm(props: Props) {
                     required: true,
                   })}
                 />
-                {errors?.password?.type === 'required' && (
+                {errors.password?.type === 'required' && (
                   <span className="text-red-800 block mt-2">
                     This field is required
                   </span>
                 )}
                 {errors.password && (
                   <span className="text-red-800 block mt-2">
-                    {errors.password?.message}
+                    {errors.password.message}
                   </span>
                 )}
               </div>
