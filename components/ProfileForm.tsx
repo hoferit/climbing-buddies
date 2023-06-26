@@ -1,8 +1,9 @@
 'use client';
-import { userContext } from '@/utils/useuser'; // Import your UserContext
+import { updateUserById } from '@/database/users';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { User } from '@prisma/client';
 import { enqueueSnackbar, SnackbarProvider } from 'notistack';
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -19,7 +20,24 @@ const schema = z.object({
 });
 
 export function EditProfileForm() {
-  const { user } = useContext(userContext); // Use your UserContext
+  const [userData, setUserData] = useState<User | null>(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        // Make the API call to fetch user data
+        const response = await fetch('/api/user');
+        const data = await response.json();
+        setUserData(data.user);
+      } catch (error) {
+        console.error('Failed to fetch user data', error);
+      }
+    };
+
+    fetchUserData().catch((error) => {
+      console.error('Error fetching user data:', error);
+    });
+  }, []);
 
   const {
     register,
@@ -31,36 +49,30 @@ export function EditProfileForm() {
   });
 
   useEffect(() => {
-    if (user) {
-      setValue('firstName', user.firstName || '');
-      setValue('lastName', user.lastName || '');
-      setValue('climbingLevel', user.climbingLevel || '');
+    if (userData !== null) {
+      setValue('firstName', userData.firstName || '');
+      setValue('lastName', userData.lastName || '');
+      setValue('climbingLevel', userData.climbingLevel || '');
     }
-  }, [setValue, user]);
+  }, [userData, setValue]);
 
   const onSubmit: SubmitHandler<ProfileInputs> = async (data) => {
     try {
-      const response = await fetch('/api/updateuser', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
+      if (userData !== null) {
+        const updatedUser = await updateUserById(userData.id, data);
 
-      if (response.ok) {
-        // Update was successful
-        const updatedUser = await response.json();
-        console.log('Updated user: ', updatedUser);
-        enqueueSnackbar('Profile updated successfully!', {
-          variant: 'success',
-        });
-      } else {
-        // Handle error response
-        const errorData = await response.json();
-        console.error('Error updating user: ', errorData);
-        // Inform user about error
-        enqueueSnackbar('Error updating profile!', { variant: 'error' });
+        if (updatedUser) {
+          // Update was successful
+          enqueueSnackbar('Profile updated successfully!', {
+            variant: 'success',
+          });
+        } else {
+          // Handle error response
+          console.error('Error updating user');
+
+          // Inform user about error
+          enqueueSnackbar('Error updating profile!', { variant: 'error' });
+        }
       }
     } catch (error) {
       console.error('Failed to update user: ', error);
@@ -135,7 +147,7 @@ export function EditProfileForm() {
                   className="w-full bg-primary text-secondary hover:bg-secondary hover:text-primary border border-input focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                   disabled={isSubmitting}
                 >
-                  Submit
+                  Update
                 </button>
               </form>
             </div>
