@@ -1,5 +1,3 @@
-// react-hook-form needs following format {errors.username?.message}
-// /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 'use client';
 
 import { RegisterResponseBodyPost } from '@/app/api/(auth)/register/route';
@@ -43,7 +41,7 @@ export function RegistrationForm() {
     });
     if (response.ok) {
       const responseData: RegisterResponseBodyPost = await response.json();
-      router.push(`/profile/${responseData.user.username}`);
+      router.push(`/profile/${responseData.user.username}` as any); // workaround needs to be fixed
 
       router.refresh();
     }
