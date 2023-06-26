@@ -41,7 +41,7 @@ export function RegistrationForm() {
     });
     if (response.ok) {
       const responseData: RegisterResponseBodyPost = await response.json();
-      router.push(`/profile/${responseData.user.username}` as any); // workaround needs to be fixed
+      router.push(`/profile/${responseData.user.username}` as any);
 
       router.refresh();
     }

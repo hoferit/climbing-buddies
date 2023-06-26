@@ -1,160 +1,89 @@
-'use client';
+import { userContext } from '@/utils/useuser'; // Import your UserContext
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
+import React, { useContext, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-const formSchema = z.object({
-  firstName: z.string().min(1, 'First name is required').max(100),
-  lastName: z.string().min(1, 'Last name is required').max(100),
-  climbingLevel: z.string().min(1, 'Climbing level is required').max(100),
-  profilePictureUrl: z.string(), // Add necessary validation here
+type ProfileInputs = {
+  firstName: string;
+  lastName: string;
+  climbingLevel: number;
+};
+
+const schema = z.object({
+  firstName: z.string(),
+  lastName: z.string(),
+  climbingLevel: z.number(),
 });
 
-type FormSchemaType = z.infer<typeof formSchema>;
-
-export default function EditProfile() {
-  const router = useRouter();
-  async function userData(data: FormSchemaType) {
-    const response = await fetch('/api/login', {
-      method: 'POST',
-      body: JSON.stringify({
-        firstName: user.firstName,
-        lastName: user.lastName,
-        climbingLevel: user.climbingLevel,
-        // avatar: user.profilePictureUrl,
-      }),
-    });
-
-    if (response.ok) {
-      const responseData: LoginResponseBodyPost = await response.json();
-      router.push(
-        getSafeReturnToPath(props.returnTo) ||
-          `/profile/${responseData.user.username}`,
-      );
-
-      router.refresh();
-    }
-  }
+export function EditProfileForm() {
+  const { user } = useContext(userContext); // Use your UserContext
 
   const {
     register,
     handleSubmit,
     setValue,
-    formState: { errors, isSubmitting },
-  } = useForm<FormSchemaType>({
-    resolver: zodResolver(formSchema),
+    formState: { errors },
+  } = useForm<ProfileInputs>({
+    resolver: zodResolver(schema),
   });
 
-  // const handleProfilePictureUpload = async (event) => {
-  //   const file = event.target.files[0];
-  //   // Upload file to Cloudinary here and update the profile picture form field
-  //   const uploadedImageUrl = await uploadImageToCloudinary(file);
-  //   setValue('profilePictureUrl', uploadedImageUrl);
-  // };
+  useEffect(() => {
+    if (user) {
+      setValue('firstName', user.firstName || '');
+      setValue('lastName', user.lastName || '');
+      setValue('climbingLevel', user.climbingLevel || 0);
+    }
+  }, [setValue, user]);
 
-  const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
-    await userData(data);
+  const onSubmit: SubmitHandler<ProfileInputs> = async (data) => {
+    try {
+      const response = await fetch('/api/user', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        // Update was successful
+        const updatedUser = await response.json();
+        console.log('Updated user: ', updatedUser);
+        // You can also use a notification or alert library to inform user about successful operation
+        // for example if you use notistack: enqueueSnackbar('Profile updated successfully!', { variant: 'success' });
+      } else {
+        // Handle error response
+        const errorData = await response.json();
+        console.error('Error updating user: ', errorData);
+        // Inform user about error
+        // enqueueSnackbar('Error updating profile!', { variant: 'error' });
+      }
+    } catch (error) {
+      console.error('Failed to update user: ', error);
+      // Inform user about error
+      // enqueueSnackbar('Error updating profile!', { variant: 'error' });
+    }
   };
 
   return (
-    <section className="bg-primary-background dark:bg-gray-900">
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Edit Profile
-            </h1>
-            <form
-              className="space-y-4 md:space-y-6"
-              onSubmit={handleSubmit(onSubmit)}
-            >
-              <div>
-                <label
-                  htmlFor="firstName"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  First Name
-                </label>
-                <input
-                  id="firstName"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-                  required={true}
-                  {...register('firstName')}
-                />
-                {errors.firstName && (
-                  <span className="text-red-800 block mt-2">
-                    {errors.firstName.message}
-                  </span>
-                )}
-              </div>
-              <div>
-                <label
-                  htmlFor="lastName"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Last Name
-                </label>
-                <input
-                  id="lastName"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-                  required={true}
-                  {...register('lastName')}
-                />
-                {errors.lastName && (
-                  <span className="text-red-800 block mt-2">
-                    {errors.lastName.message}
-                  </span>
-                )}
-              </div>
-              <div>
-                <label
-                  htmlFor="climbingLevel"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Climbing Level
-                </label>
-                <input
-                  id="climbingLevel"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-                  required={true}
-                  {...register('climbingLevel')}
-                />
-                {errors.climbingLevel && (
-                  <span className="text-red-800 block mt-2">
-                    {errors.climbingLevel.message}
-                  </span>
-                )}
-              </div>
-              <div>
-                <label
-                  htmlFor="avatar"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Avatar
-                </label>
-                <input
-                  type="file"
-                  id="avatar"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-                  onChange={handleProfilePictureUpload}
-                />
-                {errors.profilePictureUrl && (
-                  <span className="text-red-800 block mt-2">
-                    {errors.profilePictureUrl.message}
-                  </span>
-                )}
-              </div>
-              <button
-                className="w-full bg-primary text-secondary hover:bg-secondary hover:text-primary border border-input focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                disabled={isSubmitting}
-              >
-                Update Profile
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <label>
+        First Name:
+        <input {...register('firstName')} />
+        {errors.firstName && <p>{errors.firstName.message}</p>}
+      </label>
+      <label>
+        Last Name:
+        <input {...register('lastName')} />
+        {errors.lastName && <p>{errors.lastName.message}</p>}
+      </label>
+      <label>
+        Climbing Level:
+        <input type="number" {...register('climbingLevel')} />
+        {errors.climbingLevel && <p>{errors.climbingLevel.message}</p>}
+      </label>
+      <input type="submit" />
+    </form>
   );
 }

@@ -1,8 +1,9 @@
-import { getSessionByToken } from '@/database/sessions';
-import { getUserById, updateUserById } from '@/database/users';
+import { getValidSessionByToken } from '@/database/sessions';
+import { updateUserById } from '@/database/users';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { ErrorResponseBody } from '../user/route';
 
 type UpdateUserBody = {
   firstName: string | null;
@@ -37,7 +38,7 @@ export async function PATCH(
     );
   }
 
-  const session = await getSessionByToken(sessionToken);
+  const session = await getValidSessionByToken(sessionToken);
 
   if (!session) {
     return NextResponse.json(
