@@ -9,13 +9,13 @@ export default async function UserList() {
       <h1>User List</h1>
       {users.map((user) => (
         <div key={`user-div-${user.id}`}>
-          <Link href={`/profiles/${user.username}`}>{user.username}</Link>
+          <Link href={`/users/${user.username}`}>{user.username}</Link>
           <Image
             alt="uploaded"
-            fill
-            style={{ objectFit: 'cover' }}
             src={`${user.profilePictureUrl}`}
             unoptimized={true}
+            width={400}
+            height={400}
           />
           <div>First Name: {user.firstName}</div>
           <div>Last Name: {user.lastName}</div>
