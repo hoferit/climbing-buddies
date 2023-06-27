@@ -41,6 +41,7 @@ export default function ImageUpload({ onChange, value }: Props) {
               <div className=" absolute inset-0 w-full h-full">
                 <Image
                   alt="uploaded"
+                  unoptimized={true}
                   fill
                   style={{ objectFit: 'cover' }}
                   src={value}
