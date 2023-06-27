@@ -1,6 +1,6 @@
 import UserList from '@/components/UserList';
 
-export default function profilesPage() {
+export default function usersPage() {
   return (
     <main>
       <UserList />
