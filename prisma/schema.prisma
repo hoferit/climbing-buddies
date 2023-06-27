@@ -13,21 +13,22 @@ datasource db {
 }
 
 model User {
-  id                   Int                @id @default(autoincrement())
-  username             String             @unique
-  firstName            String?
-  lastName             String?
-  email                String             @unique
-  passwordHash         String
-  climbingLevel        String?
-  profilePictureUrl    String?
-  createdAt            DateTime           @default(now())
-  updatedAt            DateTime           @updatedAt
-  deletedAt            DateTime?
-  eventsOrganised      Event[]
-  initiatedFriendships Friendship[]       @relation("FriendshipRequests")
-  receivedFriendships  Friendship[]       @relation("FriendshipResponses")
-  eventParticipants    EventParticipant[] @relation("UserEvents")
+  id                       Int                @id @default(autoincrement())
+  username                 String             @unique
+  firstName                String?
+  lastName                 String?
+  email                    String             @unique
+  passwordHash             String
+  climbingLevel            String?
+  profilePictureUrl        String?
+  createdAt                DateTime           @default(now())
+  updatedAt                DateTime           @updatedAt
+  deletedAt                DateTime?
+  eventsOrganised          Event[]
+  sentFriendRequests       Friend[]           @relation("SentFriendRequests")
+  receivedFriendRequests   Friend[]           @relation("ReceivedFriendRequests")
+  friends                  Friend[]           @relation("UserFriends")
+  eventParticipants        EventParticipant[] @relation("UserEvents")
   sessions Session[] // each user can have multiple sessions
 }
 
@@ -39,13 +40,19 @@ model Session {
   expire           DateTime
 }
 
-model Friendship {
-  userId   Int
-  friendId Int
-  user     User @relation("FriendshipRequests", fields: [userId], references: [id])
-  friend   User @relation("FriendshipResponses", fields: [friendId], references: [id])
+model Friend {
+  id           Int      @id @default(autoincrement())
+  status       String   // "pending", "accepted", "rejected", etc.
+  createdAt    DateTime @default(now())
 
-  @@id([userId, friendId])
+  user         User     @relation("UserFriends", fields: [userId], references: [id])
+  userId       Int
+
+  sentBy       User     @relation("SentFriendRequests", fields: [sentById], references: [id])
+  sentById     Int
+
+  receivedBy   User     @relation("ReceivedFriendRequests", fields: [receivedById], references: [id])
+  receivedById Int
 }
 
 model Gym {
