@@ -12,6 +12,7 @@ export default async function UserList() {
           <Link href={`/users/${user.username}`}>{user.username}</Link>
           <Image
             alt="uploaded"
+            // eslint-disable-next-line upleveled/no-unnecessary-interpolations
             src={`${user.profilePictureUrl}`}
             unoptimized={true}
             width={400}

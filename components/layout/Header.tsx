@@ -36,6 +36,12 @@ export default async function Header() {
           <div className="text-sm lg:flex-grow">
             <Link
               className="lock mt-4 lg:inline-block lg:mt-0 text-secondary hover:text-secondary-foreground mr-4"
+              href="/users"
+            >
+              Users
+            </Link>
+            <Link
+              className="lock mt-4 lg:inline-block lg:mt-0 text-secondary hover:text-secondary-foreground mr-4"
               href="/login"
             >
               Friends
