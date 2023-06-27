@@ -61,6 +61,21 @@ export const getUserById = async (id: number) => {
   return user;
 };
 
+export const getAllUsers = async () => {
+  const users = await prisma.user.findMany({
+    select: {
+      id: true,
+      username: true,
+      firstName: true,
+      lastName: true,
+      climbingLevel: true,
+      profilePictureUrl: true,
+    },
+  });
+
+  return users;
+};
+
 export async function updateUserById(
   id: number,
   data: Partial<User>,

@@ -40,7 +40,7 @@ export default function ImageUpload({ onChange, value }: Props) {
             {!!value && (
               <div className=" absolute inset-0 w-full h-full">
                 <Image
-                  alt="uploade"
+                  alt="uploaded"
                   fill
                   style={{ objectFit: 'cover' }}
                   src={value}
