@@ -8,10 +8,17 @@ export const createFriendship = async (
 ): Promise<Friend> => {
   const friendship = await prisma.friend.create({
     data: {
-      user: { connect: { id: userId } },
-      sentBy: { connect: { id: userId } },
-      receivedBy: { connect: { id: friendId } },
-      status: 'PENDING', // update status to "pending"
+      userId: userId,
+      friendId: friendId,
+      sentById: userId,
+      receivedById: friendId,
+      status: FriendshipStatus.PENDING,
+    },
+    include: {
+      user: true,
+      friend: true,
+      sentBy: true,
+      receivedBy: true,
     },
   });
 
@@ -23,7 +30,16 @@ export const acceptFriendship = async (
 ): Promise<Friend> => {
   const updatedFriendship = await prisma.friend.update({
     where: { id: friendshipId },
-    data: { status: FriendshipStatus.ACCEPTED }, // update status to "accepted"
+    data: {
+      status: FriendshipStatus.ACCEPTED,
+      friendId: friendshipId, // provide the friendId to update the relationship
+    },
+    include: {
+      user: true,
+      friend: true,
+      sentBy: true,
+      receivedBy: true,
+    },
   });
 
   return updatedFriendship;
@@ -34,8 +50,34 @@ export const rejectFriendship = async (
 ): Promise<Friend> => {
   const updatedFriendship = await prisma.friend.update({
     where: { id: friendshipId },
-    data: { status: FriendshipStatus.REJECTED }, // update status to "rejected"
+    data: {
+      status: FriendshipStatus.REJECTED,
+      friendId: friendshipId, // provide the friendId to update the relationship
+    },
+    include: {
+      user: true,
+      friend: true,
+      sentBy: true,
+      receivedBy: true,
+    },
   });
 
   return updatedFriendship;
+};
+
+export const getFriendList = async (userId: number) => {
+  const friends = await prisma.friend.findMany({
+    where: {
+      userId,
+      status: 'ACCEPTED', // Assuming only accepted friendships are considered in the friend list
+    },
+    include: {
+      friend: true,
+    },
+  });
+
+  // Extract the friend data from the list
+  const friendList = friends.map((friendship) => friendship.friend);
+
+  return friendList;
 };
