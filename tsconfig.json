@@ -6,14 +6,7 @@
       {
         "name": "next"
       }
-    ],
-    "baseUrl": ".",
-    "paths": {
-      "@/*": [
-        "./*"
-      ]
-    },
-    "jsx": "preserve"
+    ]
   },
   "include": [
     "**/.eslintrc.cjs",
@@ -23,7 +16,6 @@
     "**/*.jsx",
     "**/*.cjs",
     "**/*.mjs",
-    ".next/types/**/*.ts",
-    "utils/db"
+    ".next/types/**/*.ts"
   ]
 }
