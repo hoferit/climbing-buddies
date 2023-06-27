@@ -1,92 +1,52 @@
+import { createFriendship } from '@/database/friends';
 import { getValidSessionByToken } from '@/database/sessions';
-import { updateUserById } from '@/database/users';
+import { getUserByUsername } from '@/database/users';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
-import { ErrorResponseBody } from '../user/route';
 
-type UpdateUserBody = {
-  firstName: string | null;
-  lastName: string | null;
-  climbingLevel: string | null;
-  profilePictureUrl: string | null;
-};
-
-const updateUserSchema = z.object({
-  firstName: z.string().nullable(),
-  lastName: z.string().nullable(),
-  climbingLevel: z.string().nullable(),
-  profilePictureUrl: z.string().nullable(),
-});
-
-export type UpdateUserResponseBody = {
-  user: UpdateUserBody;
-};
-
-export async function PUT(
-  request: NextRequest,
-): Promise<NextResponse<UpdateUserResponseBody | ErrorResponseBody>> {
+export async function POST(request: NextRequest): Promise<NextResponse<any>> {
   // 1. Check if the user is authenticated
-  const sessionToken = cookies().get('sessionToken')?.value;
+  const sessionTokenCookie = cookies().get('sessionToken');
 
-  if (!sessionToken) {
+  if (!sessionTokenCookie) {
     return NextResponse.json(
-      {
-        error: 'You need to be logged in to update your profile',
-      },
+      { error: 'You need to be logged in to send a friend request' },
       { status: 401 },
     );
   }
 
-  const session = await getValidSessionByToken(sessionToken);
+  const session = await getValidSessionByToken(sessionTokenCookie.value);
 
   if (!session) {
-    return NextResponse.json(
-      {
-        error: 'Session not found',
-      },
-      { status: 404 },
-    );
+    return NextResponse.json({ error: 'Session not found' }, { status: 404 });
   }
 
   // 2. Validate and parse the request body
-  const body = await request.json();
+  const { username } = await request.json();
+  if (!username) {
+    return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
+  }
 
-  const result = updateUserSchema.safeParse(body);
+  // 3. Fetch the user by username
+  const user = await getUserByUsername(username);
 
-  if (!result.success) {
+  if (!user) {
+    return NextResponse.json({ error: 'User not found' }, { status: 404 });
+  }
+
+  // 4. Create the friend request
+  const friendship = await createFriendship(session.userId, user.id);
+
+  if (!friendship) {
     return NextResponse.json(
-      {
-        error: 'Invalid data',
-      },
-      { status: 400 },
+      { error: 'Failed to send friend request' },
+      { status: 500 },
     );
   }
 
-  // 3. Update the user in the database
-  const updatedUser = await updateUserById(session.userId, result.data);
-
-  if (!updatedUser) {
-    return NextResponse.json(
-      {
-        error: 'User not found',
-      },
-      { status: 404 },
-    );
-  }
-
-  // 4. Return the updated user
+  // 5. Return the success response
   return NextResponse.json(
-    {
-      user: {
-        firstName: updatedUser.firstName,
-        lastName: updatedUser.lastName,
-        climbingLevel: updatedUser.climbingLevel,
-        profilePictureUrl: updatedUser.profilePictureUrl,
-      },
-    },
-    {
-      status: 200,
-    },
+    { message: 'Friend request sent successfully' },
+    { status: 200 },
   );
 }
