@@ -34,7 +34,7 @@ export default function ImageUpload({ onChange, value }: Props) {
             onKeyDown={handleKeyDown}
             role="button"
             tabIndex={0}
-            className=" relative cursor-pointer hover:opacity-70 transition border-dashed border-2 p-20 border-neutral-300 flex flex-col justify-center items-center gap-4 text-neutral-600"
+            className=" relative cursor-pointer hover:opacity-70 transition  p-20  flex flex-col justify-center items-center gap-4 text-neutral-600"
           >
             <div className="font-semibold text-lg">Click to upload</div>
             {!!value && (
