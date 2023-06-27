@@ -42,7 +42,7 @@ model Session {
 
 model Friend {
   id           Int      @id @default(autoincrement())
-  status       String   // "pending", "accepted", "rejected", etc.
+  status       FriendshipStatus
   createdAt    DateTime @default(now())
 
   user         User     @relation("UserFriends", fields: [userId], references: [id])
@@ -54,6 +54,13 @@ model Friend {
   receivedBy   User     @relation("ReceivedFriendRequests", fields: [receivedById], references: [id])
   receivedById Int
 }
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
 
 model Gym {
   id       Int     @id @default(autoincrement())
