@@ -1,6 +1,5 @@
 'use client';
 
-import { RegisterResponseBodyPost } from '@/app/api/(auth)/register/route';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { SubmitHandler, useForm } from 'react-hook-form';

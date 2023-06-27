@@ -14,7 +14,7 @@ export default async function Header() {
 
   return (
     <header>
-      <nav className="flex items-center justify-between flex-wrap bg-primary p-6">
+      <nav className="flex items-center justify-between flex-wrap bg-primary p-6 mb-20">
         <div className="flex items-center flex-shrink-0 text-secondary mr-6">
           <Link className="font-semibold text-xl tracking-tight" href="/">
             Climbing Buddies
