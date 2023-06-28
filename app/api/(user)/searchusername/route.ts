@@ -23,13 +23,13 @@ export type ErrorResponseBody = {
 export async function GET(): Promise<
   NextResponse<SearchUsersResponseBody | ErrorResponseBody>
 > {
-  // 1. Check if the user is authenticated
+  // Check if the user is authorized and authenticated
   const sessionToken = cookies().get('sessionToken')?.value;
 
   if (!sessionToken) {
     return NextResponse.json(
       {
-        error: 'You need to be logged in to update your profile',
+        error: 'You need to be logged in to search for users',
       },
       { status: 401 },
     );

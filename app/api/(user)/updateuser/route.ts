@@ -27,9 +27,9 @@ export async function PUT(
   request: NextRequest,
 ): Promise<NextResponse<UpdateUserResponseBody | ErrorResponseBody>> {
   // 1. Check if the user is authenticated
-  const sessionToken = cookies().get('sessionToken')?.value;
+  const sessionTokenCookie = cookies().get('sessionToken');
 
-  if (!sessionToken) {
+  if (!sessionTokenCookie) {
     return NextResponse.json(
       {
         error: 'You need to be logged in to update your profile',
@@ -38,7 +38,7 @@ export async function PUT(
     );
   }
 
-  const session = await getValidSessionByToken(sessionToken);
+  const session = await getValidSessionByToken(sessionTokenCookie.value);
 
   if (!session) {
     return NextResponse.json(

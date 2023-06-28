@@ -1,6 +1,5 @@
-import { getValidSessionByToken } from '@/database/sessions';
 import { getUserById } from '@/database/users';
-import { cookies } from 'next/headers';
+import { authorizeAndAuthenticate } from '@/utils/auth';
 import { NextResponse } from 'next/server';
 
 type PublicUser = {
@@ -23,29 +22,7 @@ export type ErrorResponseBody = {
 export async function GET(): Promise<
   NextResponse<UserResponseBodyGet | ErrorResponseBody>
 > {
-  // Get the session token from the cookies
-  const validSessionToken = cookies().get('sessionToken')?.value;
-
-  if (!validSessionToken) {
-    return NextResponse.json(
-      {
-        error: 'Session token is missing',
-      },
-      { status: 401 },
-    );
-  }
-
-  // Get the session from the database
-  const session = await getValidSessionByToken(validSessionToken);
-
-  if (!session) {
-    return NextResponse.json(
-      {
-        error: 'Invalid session token',
-      },
-      { status: 401 },
-    );
-  }
+  const session = await authorizeAndAuthenticate();
 
   // Get the user from the database
   const user = await getUserById(session.userId);
