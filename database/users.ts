@@ -1,6 +1,7 @@
-import { PrismaClient, User } from '@prisma/client';
+import { prismadb } from '@/utils/prismadb';
+import { User } from '@prisma/client';
 
-const prisma = new PrismaClient();
+const prisma = prismadb;
 
 type UserWithPasswordHash = {
   id: number;

@@ -1,6 +1,6 @@
-import { PrismaClient } from '@prisma/client';
+import { prismadb } from '@/utils/prismadb';
 
-const prisma = new PrismaClient();
+const prisma = prismadb;
 
 export const deleteExpiredSessions = async () => {
   await prisma.session.deleteMany({
