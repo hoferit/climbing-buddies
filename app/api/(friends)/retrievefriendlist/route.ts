@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
 export async function GET(): Promise<NextResponse<any>> {
-  // 1. Check if the user is authenticated
+  // Check if the user is authenticated
   const sessionTokenCookie = cookies().get('sessionToken');
 
   if (!sessionTokenCookie) {
@@ -14,15 +14,15 @@ export async function GET(): Promise<NextResponse<any>> {
     );
   }
 
-  // 2. retrieve the session for the authenticated user
+  // Retrieve the session for the authenticated user
   const session = await getValidSessionByToken(sessionTokenCookie.value);
 
   if (!session) {
     return NextResponse.json({ error: 'Session not found' }, { status: 404 });
   }
-  // 3. Retrieve the friend list for the user
+  // Retrieve the friend list for the user
   const friendList = await getFriendList(session.userId);
 
-  // 4. Return the friend list
+  // Return the friend list
   return NextResponse.json({ friendList }, { status: 200 });
 }

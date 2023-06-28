@@ -1,34 +1,22 @@
 import { acceptFriendship } from '@/database/friends';
-import { getValidSessionByToken } from '@/database/sessions';
-import { cookies } from 'next/headers';
+import { authorizeAndAuthenticate } from '@/utils/auth';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function PUT(request: NextRequest): Promise<NextResponse<any>> {
-  // 1. Check if the user is authenticated
-  const sessionTokenCookie = cookies().get('sessionToken');
+  const authResponse = await authorizeAndAuthenticate();
 
-  if (!sessionTokenCookie) {
-    return NextResponse.json(
-      { error: 'You need to be logged in to send a friend request' },
-      { status: 401 },
-    );
+  // Check if there's an error in the authorization and authentication
+  if (authResponse instanceof NextResponse) {
+    return authResponse; // Return the error response
   }
-
-  // 2. retrieve the session for the authenticated user
-  const session = await getValidSessionByToken(sessionTokenCookie.value);
-
-  if (!session) {
-    return NextResponse.json({ error: 'Session not found' }, { status: 404 });
-  }
-
-  // 3. Parse the request body to get the friendship ID
+  // Parse the request body to get the friendship ID
   const { friendshipId } = await request.json();
 
   if (!friendshipId) {
     return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
   }
 
-  // 4. Accept the friend request
+  // Accept the friend request
   const updatedFriendship = await acceptFriendship(friendshipId);
 
   if (!updatedFriendship) {
@@ -38,7 +26,7 @@ export async function PUT(request: NextRequest): Promise<NextResponse<any>> {
     );
   }
 
-  // 5. Return the success response
+  // Return the success response
   return NextResponse.json(
     { message: 'Friend request accepted successfully' },
     { status: 200 },
