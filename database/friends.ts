@@ -114,3 +114,26 @@ export const getFriendList = async (userId: number) => {
     return null;
   }
 };
+
+export const getFriendRequestsByUserId = async (userId: number) => {
+  try {
+    const friendRequests = await prisma.friend.findMany({
+      where: {
+        receivedById: userId,
+        status: 'PENDING',
+      },
+      include: {
+        sentBy: true,
+      },
+    });
+
+    // Extract the friend request data from the list
+    const friendRequestList = friendRequests.map(
+      (friendRequest) => friendRequest.sentBy,
+    );
+
+    return friendRequestList;
+  } catch (error) {
+    return null;
+  }
+};
