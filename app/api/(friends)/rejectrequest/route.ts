@@ -29,7 +29,6 @@ export async function PUT(
   // 3. Reject the friendship request
   const rejectedFriendship = await rejectFriendship(friendshipId);
 
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!rejectedFriendship) {
     return NextResponse.json(
       { error: 'Failed to reject friend request' },

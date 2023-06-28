@@ -31,7 +31,6 @@ export async function PUT(request: NextRequest): Promise<NextResponse<any>> {
   // 4. Accept the friend request
   const updatedFriendship = await acceptFriendship(friendshipId);
 
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!updatedFriendship) {
     return NextResponse.json(
       { error: 'Failed to accept friend request' },

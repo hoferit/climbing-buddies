@@ -3,7 +3,21 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export default async function UserList() {
-  const users = await getAllUsers();
+  const users:
+    | {
+        id: number;
+        username: string;
+        firstName: string | null;
+        lastName: string | null;
+        climbingLevel: string | null;
+        profilePictureUrl: string | null;
+      }[]
+    | null = await getAllUsers();
+
+  if (!users) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div>
       <h1>User List</h1>
@@ -12,8 +26,7 @@ export default async function UserList() {
           <Link href={`/users/${user.username}`}>{user.username}</Link>
           <Image
             alt="uploaded"
-            // eslint-disable-next-line upleveled/no-unnecessary-interpolations
-            src={`${user.profilePictureUrl}`}
+            src={`/${user.profilePictureUrl}`}
             unoptimized={true}
             width={400}
             height={400}
