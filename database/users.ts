@@ -140,6 +140,26 @@ export const createUser = async (
   }
 };
 
+export async function searchUsersByUsername(username: string) {
+  const users = await prisma.user.findMany({
+    where: {
+      username: {
+        contains: username,
+      },
+    },
+    select: {
+      id: true,
+      username: true,
+      firstName: true,
+      lastName: true,
+      climbingLevel: true,
+      profilePictureUrl: true,
+    },
+  });
+
+  return users;
+}
+
 export const getUserBySessionToken = async (token: string) => {
   try {
     const user = await prisma.session.findFirst({
