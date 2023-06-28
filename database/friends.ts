@@ -77,33 +77,6 @@ export const rejectFriendship = async (
   }
 };
 
-export const addFriend = async (
-  userId: number,
-  friendId: number,
-): Promise<Friend | null> => {
-  try {
-    const friendship = await prisma.friend.create({
-      data: {
-        status: 'PENDING',
-        userId: userId,
-        friendId: friendId,
-        sentById: userId,
-        receivedById: friendId,
-      },
-      include: {
-        user: true,
-        friend: true,
-        sentBy: true,
-        receivedBy: true,
-      },
-    });
-
-    return friendship;
-  } catch (error) {
-    return null;
-  }
-};
-
 export const removeFriend = async (
   userId: number,
   friendId: number,
