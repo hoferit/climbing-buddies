@@ -27,10 +27,25 @@ export default function FriendList() {
     });
   }, []);
 
-  const handleRemoveFriend = (friendId: number) => {
-    // Find the friend to be removed from the list
-    const updatedFriends = friends.filter((friend) => friend.id !== friendId);
-    setFriends(updatedFriends);
+  const handleRemoveFriend = async (friendId: number) => {
+    try {
+      // Make a request to the API to remove the friend
+      const response = await fetch(`/api/removefriend?friendId=${friendId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        // If the request is successful, update the friend list state by filtering out the removed friend
+        setFriends((prevFriends) =>
+          prevFriends.filter((friend) => friend.id !== friendId),
+        );
+      } else {
+        // If the request fails, handle the error appropriately
+        console.error('Failed to remove friend:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error removing friend:', error);
+    }
   };
 
   return (
