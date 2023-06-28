@@ -1,12 +1,14 @@
 import Image from 'next/image';
 
+type User = {
+  id: number;
+  username: string;
+  profilePictureUrl: string | null;
+  climbingLevel: string | null;
+};
+
 type FriendListItemProps = {
-  friend: {
-    id: number;
-    username: string;
-    profilePictureUrl: string | null;
-    climbingLevel: string;
-  };
+  friend: User;
   onRemoveFriend: (friendId: number) => void;
 };
 

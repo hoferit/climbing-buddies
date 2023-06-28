@@ -19,7 +19,7 @@ export default function FriendRequestList({
 }: FriendRequestListProps) {
   return (
     <div>
-      <h2>Friend Requests</h2>
+      <h2>Friend Requests:</h2>
       {friendRequests.length > 0 ? (
         <ul>
           {friendRequests.map((friendRequest) => (
