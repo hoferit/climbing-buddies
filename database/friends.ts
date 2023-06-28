@@ -77,6 +77,22 @@ export const rejectFriendship = async (
   }
 };
 
+export const removeFriend = async (
+  userId: number,
+  friendId: number,
+): Promise<void> => {
+  try {
+    await prisma.friend.deleteMany({
+      where: {
+        userId,
+        friendId,
+      },
+    });
+  } catch (error) {
+    throw new Error('Failed to remove friend');
+  }
+};
+
 export const getFriendList = async (userId: number) => {
   try {
     const friends = await prisma.friend.findMany({
