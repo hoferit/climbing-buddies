@@ -1,6 +1,7 @@
 import { getAllUsers } from '@/database/users';
 import Image from 'next/image';
 import Link from 'next/link';
+import AddFriendButton from './AddFriendButton';
 
 export default async function UserList() {
   const users:
@@ -38,6 +39,7 @@ export default async function UserList() {
           <div>First Name: {user.firstName}</div>
           <div>Last Name: {user.lastName}</div>
           <div>Climbing Level: {user.climbingLevel}</div>
+          <AddFriendButton friendId={user.id} />
         </div>
       ))}
     </div>
