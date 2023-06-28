@@ -43,8 +43,6 @@ export async function POST(
 
   // 2. verify the user data and check that the name is not taken
   if (!result.success) {
-    // zod send you details about the error
-    // console.log(result.error);
     return NextResponse.json(
       {
         error: 'username or password or email missing',
@@ -54,8 +52,6 @@ export async function POST(
   }
 
   if (await getUserByUsername(result.data.username)) {
-    // zod send you details about the error
-    // console.log(result.error);
     return NextResponse.json(
       {
         error: 'username is already used',
@@ -65,8 +61,6 @@ export async function POST(
   }
 
   if (await getUserByUsername(result.data.email)) {
-    // zod send you details about the error
-    // console.log(result.error);
     return NextResponse.json(
       {
         error: 'email is already used',
@@ -86,8 +80,6 @@ export async function POST(
   );
 
   if (!newUser) {
-    // zod send you details about the error
-    // console.log(result.error);
     return NextResponse.json(
       {
         error: 'Error creating the new user',
