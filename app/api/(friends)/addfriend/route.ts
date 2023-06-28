@@ -1,4 +1,4 @@
-import { addFriend } from '@/database/friends';
+import { createFriendship } from '@/database/friends';
 import { authorizeAndAuthenticate } from '@/utils/auth';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -11,7 +11,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<any>> {
     const { friendId } = await request.json();
 
     // Add the friend to the database
-    await addFriend(session.userId, friendId);
+    await createFriendship(session.userId, friendId);
 
     // Return a success response
     return NextResponse.json({ success: true }, { status: 200 });
