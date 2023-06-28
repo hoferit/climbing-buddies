@@ -1,7 +1,5 @@
-import { prismadb } from '@/utils/prismadb';
+import { prisma } from '@/utils/prismadb';
 import { Friend, FriendshipStatus } from '@prisma/client';
-
-const prisma = prismadb;
 
 export const createFriendship = async (
   userId: number,

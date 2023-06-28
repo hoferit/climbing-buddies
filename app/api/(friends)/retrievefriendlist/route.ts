@@ -11,7 +11,7 @@ export async function GET(): Promise<NextResponse<any>> {
     const friendList = await getFriendList(session.userId);
 
     // 3. Return the friend list
-    return NextResponse.json({ friendList }, { status: 200 });
+    return NextResponse.json({ friendList: friendList || [] }, { status: 200 });
   } catch (error) {
     const errorMessage = (error as Error).message;
 

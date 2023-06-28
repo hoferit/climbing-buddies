@@ -11,7 +11,10 @@ export async function GET(): Promise<NextResponse<any>> {
     const friendRequests = await getFriendRequestsByUserId(session.userId);
 
     // Return the friend requests
-    return NextResponse.json({ friendRequests }, { status: 200 });
+    return NextResponse.json(
+      { friendRequests: friendRequests || [] },
+      { status: 200 },
+    );
   } catch (error) {
     const errorMessage = (error as Error).message;
 
