@@ -33,7 +33,7 @@ export function LoginForm(props: Props) {
       const responseData: LoginResponseBodyPost = await response.json();
       router.push(
         getSafeReturnToPath(props.returnTo) ||
-          (`/profile/${responseData.user.username}` as any), // FIX THIS TODO
+          `/users/${responseData.user.username}`,
       );
 
       router.refresh();

@@ -98,6 +98,9 @@ export function EditProfileForm() {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Your Profile
               </h1>
+              <span className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                Profile Picture:
+              </span>
               <ImageUpload
                 onChange={(value) => setValue('profilePictureUrl', value)}
                 value={watch('profilePictureUrl') || ''}

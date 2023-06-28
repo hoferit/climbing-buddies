@@ -24,13 +24,17 @@ export default async function UserList() {
       {users.map((user) => (
         <div key={`user-div-${user.id}`}>
           <Link href={`/users/${user.username}`}>{user.username}</Link>
-          <Image
-            alt="uploaded"
-            src={`/${user.profilePictureUrl}`}
-            unoptimized={true}
-            width={400}
-            height={400}
-          />
+          {user.profilePictureUrl ? (
+            <Image
+              alt="uploaded"
+              src={user.profilePictureUrl}
+              unoptimized={true}
+              width={400}
+              height={400}
+            />
+          ) : (
+            <p>No profile picture available</p>
+          )}
           <div>First Name: {user.firstName}</div>
           <div>Last Name: {user.lastName}</div>
           <div>Climbing Level: {user.climbingLevel}</div>
