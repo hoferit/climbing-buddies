@@ -30,10 +30,8 @@ export default function FriendListAndRequest() {
         method: 'PUT',
         body: JSON.stringify({ friendId }),
       });
-
-      // Handle response as needed
     } catch (error) {
-      // Handle error
+      console.error('Error accepting friend request');
     }
   }
 
@@ -43,7 +41,9 @@ export default function FriendListAndRequest() {
         method: 'PUT',
         body: JSON.stringify({ friendId }),
       });
-    } catch (error) {}
+    } catch (error) {
+      console.error('Error rejecting friend request');
+    }
   }
 
   return (

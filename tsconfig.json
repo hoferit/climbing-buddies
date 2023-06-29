@@ -4,15 +4,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/components/*": [
-        "components/*"
-      ],
-      "@/database/*": [
-        "database/*"
-      ],
-      "@/*": [
-        "*"
-      ]
+      "@/components/*": ["components/*"],
+      "@/database/*": ["database/*"],
+      "@/*": ["*"]
     },
     "plugins": [
       {
