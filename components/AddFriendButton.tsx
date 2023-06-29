@@ -6,7 +6,7 @@ type AddFriendButtonProps = {
 export default function AddFriendButton({ friendId }: AddFriendButtonProps) {
   const handleAddFriend = async () => {
     try {
-      const response = await fetch('/api/addfriend', {
+      const response = await fetch('/api/addfriendbyid', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
