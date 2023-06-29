@@ -4,6 +4,8 @@ import FriendRequestItem from './FriendRequestItem';
 interface User {
   id: number;
   username: string;
+  profilePictureUrl: string | null;
+  climbingLevel: string | null;
 }
 
 interface FriendRequestListProps {
