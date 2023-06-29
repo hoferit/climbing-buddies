@@ -8,8 +8,13 @@ interface User {
   climbingLevel: string | null;
 }
 
+interface Friendship {
+  id: number;
+  user: User;
+}
+
 export default function FriendList() {
-  const [friends, setFriends] = useState<User[]>([]);
+  const [friends, setFriends] = useState<Friendship[]>([]);
 
   useEffect(() => {
     async function fetchFriendList() {
@@ -56,10 +61,10 @@ export default function FriendList() {
       <h2>Your Friends</h2>
       {friends.length > 0 ? (
         <ul>
-          {friends.map((friend) => (
+          {friends.map((friendship) => (
             <FriendListItem
-              key={`friend-${friend.id}`}
-              friend={friend}
+              key={`friend-${friendship.id}`}
+              friend={friendship}
               onRemoveFriend={handleRemoveFriend}
             />
           ))}
