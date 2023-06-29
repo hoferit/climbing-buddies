@@ -1,5 +1,10 @@
 import Image from 'next/image';
 
+type Friendship = {
+  id: number;
+  user: User;
+};
+
 type User = {
   id: number;
   username: string;
@@ -8,8 +13,8 @@ type User = {
 };
 
 type FriendListItemProps = {
-  friend: User;
-  onRemoveFriend: (friendId: number) => void;
+  friend: Friendship;
+  onRemoveFriend: (friendshipId: number) => void;
 };
 
 export default function FriendListItem({
@@ -21,15 +26,16 @@ export default function FriendListItem({
   };
 
   return (
-    <div className="friend-list-item">
-      {friend.profilePictureUrl !== null && (
+    <div>
+      {friend.user.profilePictureUrl !== null && (
         <Image
-          src={friend.profilePictureUrl}
-          alt={`Profile Picture of ${friend.username}`}
-          className="friend-list-item__avatar"
+          src={friend.user.profilePictureUrl}
+          alt={`Profile Picture of ${friend.user.username}`}
+          width={100}
+          height={100}
         />
       )}
-      <span className="friend-list-item__username">{friend.username}</span>
+      <span>{friend.user.username}</span>
       <button onClick={handleRemoveFriend}>Remove Friend</button>
     </div>
   );
