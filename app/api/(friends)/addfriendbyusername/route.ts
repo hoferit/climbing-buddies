@@ -1,3 +1,5 @@
+// this route is to add a friend based on their username rather than their ID.
+
 import { createFriendship } from '@/database/friends';
 import { getUserByUsername } from '@/database/users';
 import { authorizeAndAuthenticate } from '@/utils/auth';

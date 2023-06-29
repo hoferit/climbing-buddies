@@ -1,3 +1,5 @@
+// this route is when you know the friend's ID and want to add them directly
+
 import { createFriendship } from '@/database/friends';
 import { authorizeAndAuthenticate } from '@/utils/auth';
 import { NextRequest, NextResponse } from 'next/server';
