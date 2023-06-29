@@ -12,7 +12,7 @@ export default function FriendList() {
   const [friends, setFriends] = useState<User[]>([]);
 
   useEffect(() => {
-    async function retrieveFriendList() {
+    async function fetchFriendList() {
       try {
         const response = await fetch('/api/retrievefriendlist');
         const data = await response.json();
@@ -22,7 +22,7 @@ export default function FriendList() {
       }
     }
 
-    retrieveFriendList().catch((error) => {
+    fetchFriendList().catch((error) => {
       console.error('Error in retrieveFriendList:', error);
     });
   }, []);

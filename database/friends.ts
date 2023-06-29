@@ -1,12 +1,12 @@
 import { prisma } from '@/utils/prismadb';
-import { Friend, FriendshipStatus } from '@prisma/client';
+import { Friendship, FriendshipStatus } from '@prisma/client';
 
 export const createFriendship = async (
   userId: number,
   friendId: number,
-): Promise<Friend | null> => {
+): Promise<Friendship | null> => {
   try {
-    const friendship = await prisma.friend.create({
+    const friendship = await prisma.friendship.create({
       data: {
         userId: userId,
         friendId: friendId,
@@ -30,9 +30,9 @@ export const createFriendship = async (
 
 export const acceptFriendship = async (
   friendshipId: number,
-): Promise<Friend | null> => {
+): Promise<Friendship | null> => {
   try {
-    const updatedFriendship = await prisma.friend.update({
+    const updatedFriendship = await prisma.friendship.update({
       where: { id: friendshipId },
       data: {
         status: FriendshipStatus.ACCEPTED,
@@ -53,9 +53,9 @@ export const acceptFriendship = async (
 
 export const rejectFriendship = async (
   friendshipId: number,
-): Promise<Friend | null> => {
+): Promise<Friendship | null> => {
   try {
-    const updatedFriendship = await prisma.friend.update({
+    const updatedFriendship = await prisma.friendship.update({
       where: { id: friendshipId },
       data: {
         status: FriendshipStatus.REJECTED,
@@ -79,7 +79,7 @@ export const removeFriend = async (
   friendshipId: number,
 ): Promise<void> => {
   try {
-    await prisma.friend.deleteMany({
+    await prisma.friendship.deleteMany({
       where: {
         userId,
         id: friendshipId,
@@ -92,7 +92,7 @@ export const removeFriend = async (
 
 export const getFriendList = async (userId: number) => {
   try {
-    const friends = await prisma.friend.findMany({
+    const friends = await prisma.friendship.findMany({
       where: {
         userId,
         status: 'ACCEPTED', // Assuming only accepted friendships are considered in the friend list
@@ -113,7 +113,7 @@ export const getFriendList = async (userId: number) => {
 
 export const getFriendRequestsByUserId = async (userId: number) => {
   try {
-    const friendRequests = await prisma.friend.findMany({
+    const friendRequests = await prisma.friendship.findMany({
       where: {
         receivedById: userId,
         status: 'PENDING',
