@@ -24,10 +24,10 @@ model User {
   updatedAt                DateTime           @updatedAt
   deletedAt                DateTime?
   eventsOrganised          Event[]
-  sentFriendRequests       Friend[]           @relation("SentFriendRequests")
-  receivedFriendRequests   Friend[]           @relation("ReceivedFriendRequests")
-  friends                  Friend[]           @relation("UserFriends")
-  friendOfUser             Friend[]           @relation("FriendOfUser")
+  sentFriendRequests       Friendship[]           @relation("SentFriendRequests")
+  receivedFriendRequests   Friendship[]           @relation("ReceivedFriendRequests")
+  friends                  Friendship[]           @relation("UserFriends")
+  friendOfUser             Friendship[]           @relation("FriendOfUser")
   // friends refers to the friends that the user has chosen, while friendOfUser refers to the users who have chosen the user as their friend. 
   eventParticipants        EventParticipant[] @relation("UserEvents")
   sessions Session[] // each user can have multiple sessions
