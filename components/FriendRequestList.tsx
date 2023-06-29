@@ -8,8 +8,8 @@ interface User {
 
 interface FriendRequestListProps {
   friendRequests: User[];
-  onAccept: (friendId: number) => void;
-  onReject: (friendId: number) => void;
+  onAccept: (friendshipId: number) => void;
+  onReject: (friendshipId: number) => void;
 }
 
 export default function FriendRequestList({

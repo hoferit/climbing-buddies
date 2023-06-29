@@ -76,13 +76,13 @@ export const rejectFriendship = async (
 
 export const removeFriend = async (
   userId: number,
-  friendId: number,
+  friendshipId: number,
 ): Promise<void> => {
   try {
     await prisma.friend.deleteMany({
       where: {
         userId,
-        friendId,
+        id: friendshipId,
       },
     });
   } catch (error) {

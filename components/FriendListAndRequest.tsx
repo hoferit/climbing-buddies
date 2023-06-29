@@ -45,7 +45,7 @@ export default function FriendListAndRequest() {
       console.error('Error rejecting friend request');
     }
   }
-
+  console.log(friendRequests);
   return (
     <div>
       <h1>Friends Page</h1>
