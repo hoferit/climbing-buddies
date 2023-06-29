@@ -36,7 +36,6 @@ export const acceptFriendship = async (
       where: { id: friendshipId },
       data: {
         status: FriendshipStatus.ACCEPTED,
-        friendId: friendshipId, // provide the friendId to update the relationship
       },
       include: {
         user: true,
@@ -60,7 +59,6 @@ export const rejectFriendship = async (
       where: { id: friendshipId },
       data: {
         status: FriendshipStatus.REJECTED,
-        friendId: friendshipId, // provide the friendId to update the relationship
       },
       include: {
         user: true,

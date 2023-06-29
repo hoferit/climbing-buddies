@@ -24,22 +24,22 @@ export default function FriendListAndRequest() {
   }, []);
 
   // Callback functions for accepting and rejecting friend requests
-  async function handleAcceptFriendRequest(friendId: number) {
+  async function handleAcceptFriendRequest(friendshipId: number) {
     try {
       await fetch('/api/acceptrequest', {
         method: 'PUT',
-        body: JSON.stringify({ friendId }),
+        body: JSON.stringify({ friendshipId }), // Pass the correct `friendshipId`
       });
     } catch (error) {
       console.error('Error accepting friend request');
     }
   }
 
-  async function handleRejectFriendRequest(friendId: number) {
+  async function handleRejectFriendRequest(friendshipId: number) {
     try {
       await fetch('/api/rejectrequest', {
         method: 'PUT',
-        body: JSON.stringify({ friendId }),
+        body: JSON.stringify({ friendshipId }),
       });
     } catch (error) {
       console.error('Error rejecting friend request');
