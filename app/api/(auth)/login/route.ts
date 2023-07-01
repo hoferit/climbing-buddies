@@ -1,12 +1,12 @@
 import crypto from 'node:crypto';
-import { createSession } from '@/database/sessions';
-import { getUserWithPasswordHashByUsername } from '@/database/users';
-import { secureCookieOptions } from '@/utils/cookies';
 import { User } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { createSession } from '../../../../database/sessions';
+import { getUserWithPasswordHashByUsername } from '../../../../database/users';
+import { secureCookieOptions } from '../../../../utils/cookies';
 import { GraphQlResponseBody } from '../register/route';
 
 export type LoginResponseBodyPost = {

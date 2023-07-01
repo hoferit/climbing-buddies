@@ -1,6 +1,6 @@
-import { createFriendRequest } from '@/database/friends';
-import { authorizeAndAuthenticate } from '@/utils/auth';
 import { NextRequest, NextResponse } from 'next/server';
+import { createFriendRequest } from '../../../../database/friends';
+import { authorizeAndAuthenticate } from '../../../../utils/auth';
 
 export async function POST(request: NextRequest): Promise<NextResponse<any>> {
   try {

@@ -1,6 +1,6 @@
-import { EmailTemplate } from '@/components/EmailTemplate';
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { EmailTemplate } from '../../../components/EmailTemplate';
 
 interface EmailSendResponse {
   id?: string;

@@ -1,12 +1,12 @@
 'use client';
 
-import { LoginResponseBodyPost } from '@/app/api/(auth)/login/route';
-import { getSafeReturnToPath } from '@/utils/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { enqueueSnackbar, SnackbarProvider } from 'notistack';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as z from 'zod';
+import { LoginResponseBodyPost } from '../app/api/(auth)/login/route';
+import { getSafeReturnToPath } from '../utils/validation';
 
 const formSchema = z.object({
   username: z.string().min(1, 'Username is required').max(100),

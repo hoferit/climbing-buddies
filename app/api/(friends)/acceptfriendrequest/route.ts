@@ -1,6 +1,6 @@
-import { acceptFriendRequest } from '@/database/friends';
-import { authorizeAndAuthenticate } from '@/utils/auth';
 import { NextRequest, NextResponse } from 'next/server';
+import { acceptFriendRequest } from '../../../../database/friends';
+import { authorizeAndAuthenticate } from '../../../../utils/auth';
 
 export async function PUT(request: NextRequest): Promise<NextResponse<any>> {
   const authResponse = await authorizeAndAuthenticate();

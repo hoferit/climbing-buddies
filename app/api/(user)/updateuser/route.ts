@@ -1,8 +1,8 @@
-import { getValidSessionByToken } from '@/database/sessions';
-import { updateUserById } from '@/database/users';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { getValidSessionByToken } from '../../../../database/sessions';
+import { updateUserById } from '../../../../database/users';
 import { ErrorResponseBody } from '../user/route';
 
 type UpdateUserBody = {

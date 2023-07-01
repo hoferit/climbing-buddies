@@ -1,6 +1,6 @@
-import { retrieveFriendList } from '@/database/friends';
-import { authorizeAndAuthenticate } from '@/utils/auth';
 import { NextResponse } from 'next/server';
+import { retrieveFriendList } from '../../../../database/friends';
+import { authorizeAndAuthenticate } from '../../../../utils/auth';
 
 export async function GET(): Promise<NextResponse<any>> {
   try {

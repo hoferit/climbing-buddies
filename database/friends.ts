@@ -1,5 +1,5 @@
-import { prisma } from '@/utils/prismadb';
 import { User } from '@prisma/client';
+import { prisma } from '../utils/prismadb';
 
 export async function acceptFriendRequest(userId: number, friendId: number) {
   // Find and update the relationship type to "friends"
@@ -43,6 +43,47 @@ export async function acceptFriendRequest(userId: number, friendId: number) {
     throw error;
   }
 }
+
+export async function rejectFriendRequest(userId: number, friendId: number) {
+  try {
+    const relationship = await prisma.userRelationship.findFirst({
+      where: {
+        OR: [
+          {
+            user_first_id: friendId,
+            user_second_id: userId,
+          },
+          {
+            user_first_id: userId,
+            user_second_id: friendId,
+          },
+        ],
+      },
+    });
+
+    if (!relationship) {
+      throw new Error('Friend request not found');
+    }
+
+    // Additional condition to check if the type matches
+    if (
+      relationship.type !== 'pending_first_second' &&
+      relationship.type !== 'pending_second_first'
+    ) {
+      throw new Error('Invalid relationship type');
+    }
+
+    // Delete the relationship from the database
+
+    await prisma.userRelationship.delete({
+      where: { id: relationship.id },
+    });
+  } catch (error) {
+    console.error('Error rejecting friend request:', error);
+    throw error;
+  }
+}
+
 export async function createFriendRequest(userId: number, friendId: number) {
   // Check if the relationship already exists
   const existingRelationship = await prisma.userRelationship.findFirst({
@@ -68,6 +109,7 @@ export async function createFriendRequest(userId: number, friendId: number) {
     },
   });
 }
+
 export async function retrieveFriendRequests(userId: number) {
   // Find all the pending friend requests for the user
   const friendRequests = await prisma.userRelationship.findMany({

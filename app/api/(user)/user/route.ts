@@ -1,6 +1,6 @@
-import { getUserById } from '@/database/users';
-import { authorizeAndAuthenticate } from '@/utils/auth';
 import { NextResponse } from 'next/server';
+import { getUserById } from '../../../../database/users';
+import { authorizeAndAuthenticate } from '../../../../utils/auth';
 
 type PublicUser = {
   id: number;

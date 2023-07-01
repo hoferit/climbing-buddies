@@ -1,6 +1,6 @@
-import { removeFriend } from '@/database/friends'; // Make sure this path points to your removeFriend function
-import { authorizeAndAuthenticate } from '@/utils/auth';
 import { NextRequest, NextResponse } from 'next/server';
+import { removeFriend } from '../../../../database/friends';
+import { authorizeAndAuthenticate } from '../../../../utils/auth';
 
 export async function POST(request: NextRequest): Promise<NextResponse<any>> {
   try {

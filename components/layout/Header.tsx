@@ -1,6 +1,6 @@
-import { getValidSessionByToken } from '@/database/sessions';
 import { cookies } from 'next/headers';
 import Link from 'next/link';
+import { getValidSessionByToken } from '../../database/sessions';
 import { LogoutButton } from './LogoutButton';
 
 export default async function Header() {

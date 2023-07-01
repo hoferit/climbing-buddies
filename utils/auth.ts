@@ -1,5 +1,5 @@
-import { getValidSessionByToken } from '@/database/sessions';
 import { cookies } from 'next/headers';
+import { getValidSessionByToken } from '../database/sessions';
 
 export async function authorizeAndAuthenticate() {
   // Check if the user is authenticated

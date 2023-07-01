@@ -1,6 +1,6 @@
 'use client';
-import { User, UserRelationship } from '@prisma/client';
-import React, { useEffect, useState } from 'react';
+import { User } from '@prisma/client';
+import { useEffect, useState } from 'react';
 import FriendListItem from './FriendListItem';
 
 export default function FriendList() {

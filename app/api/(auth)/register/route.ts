@@ -1,13 +1,13 @@
 import crypto from 'node:crypto';
-import { createSession } from '@/database/sessions';
-import { createUser, getUserByUsername } from '@/database/users';
-import { secureCookieOptions } from '@/utils/cookies';
 // import { sendWelcomeEmail } from '@/utils/emailutils';
 import { User } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { createSession } from '../../../../database/sessions';
+import { createUser, getUserByUsername } from '../../../../database/users';
+import { secureCookieOptions } from '../../../../utils/cookies';
 
 export type RegisterResponseBodyPost = {
   user: User;

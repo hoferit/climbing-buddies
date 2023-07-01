@@ -1,6 +1,5 @@
 import { User } from '@prisma/client';
 import Image from 'next/image';
-import React from 'react';
 
 interface FriendRequest {
   id: number;

@@ -1,16 +1,8 @@
-import { getValidSessionByToken } from '@/database/sessions';
-import { searchUsersByUsername } from '@/database/users';
+import { User } from '@prisma/client';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
-
-type User = {
-  id: number;
-  username: string;
-  firstName: string | null;
-  lastName: string | null;
-  climbingLevel: string | null;
-  profilePictureUrl: string | null;
-};
+import { getValidSessionByToken } from '../../../../database/sessions';
+import { searchUsersByUsername } from '../../../../database/users';
 
 export type SearchUsersResponseBody = {
   users: User[];
@@ -52,7 +44,7 @@ export async function GET(): Promise<
   // Return the search results
   return NextResponse.json(
     {
-      users: users.map((user) => ({
+      users: users.map((user: User) => ({
         id: user.id,
         username: user.username,
         firstName: user.firstName,
