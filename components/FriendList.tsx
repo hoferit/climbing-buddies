@@ -1,25 +1,10 @@
 'use client';
-import { revalidateTag } from 'next/cache';
+import { User, UserRelationship } from '@prisma/client';
 import React, { useEffect, useState } from 'react';
 import FriendListItem from './FriendListItem';
 
-interface Friend {
-  id: number;
-  username: string;
-  profilePictureUrl: string | null;
-  climbingLevel: string | null;
-  user: User;
-}
-
-type User = {
-  id: number;
-  username: string;
-  profilePictureUrl: string | null;
-  climbingLevel: string | null;
-};
-
 export default function FriendList() {
-  const [friends, setFriends] = useState<Friend[]>([]);
+  const [friends, setFriends] = useState<User[]>([]);
 
   useEffect(() => {
     async function fetchFriendList() {
@@ -37,30 +22,26 @@ export default function FriendList() {
     });
   }, []);
 
-  const handleRemoveFriend = async (friendshipId: number) => {
+  const handleRemoveFriend = async (friendId: number) => {
     try {
-      // Make a request to the API to remove the friend
-      const response = await fetch(
-        `/api/removefriend?friendshipId=${friendshipId}`,
-        {
-          method: 'DELETE',
-        },
-      );
+      // Send a POST request to the API route with the friend ID in the request body
+      const response = await fetch('/api/removefriend', {
+        method: 'POST',
+        body: JSON.stringify({ friendId }),
+      });
 
+      // Check if the response was successful
       if (response.ok) {
-        // If the request is successful, update the friend list state by filtering out the removed friend
-        setFriends((prevFriends) =>
-          prevFriends.filter((friend) => friend.id !== friendshipId),
+        // If the request is successful, update the friend request list state by filtering out the rejected request
+        setFriends((prevRequests) =>
+          prevRequests.filter((request) => request.id !== friendId),
         );
-
-        // Trigger revalidation of the friend list cache tag
-        revalidateTag('friend-list');
       } else {
         // If the request fails, handle the error appropriately
-        console.error('Failed to remove friend:', response.statusText);
+        console.error('Failed to reject friend request:', response.statusText);
       }
     } catch (error) {
-      console.error('Error removing friend:', error);
+      console.error('Error rejecting friend request:', error);
     }
   };
 
@@ -71,14 +52,12 @@ export default function FriendList() {
         <ul>
           {friends.map((friend) => (
             // Check if friend.user exists before rendering the FriendListItem
-            <React.Fragment key={`friend-${friend.id}`}>
-              {friend.user && (
-                <FriendListItem
-                  friend={friend}
-                  onRemoveFriend={handleRemoveFriend}
-                />
-              )}
-            </React.Fragment>
+            <div key={`friend-${friend.id}`}>
+              <FriendListItem
+                friend={friend}
+                onRemoveFriend={handleRemoveFriend}
+              />
+            </div>
           ))}
         </ul>
       ) : (

@@ -11,7 +11,6 @@ export async function authorizeAndAuthenticate() {
 
   // Retrieve the session for the authenticated user
   const session = await getValidSessionByToken(sessionTokenCookie.value);
-
   if (!session) {
     throw new Error('Session not found');
   }

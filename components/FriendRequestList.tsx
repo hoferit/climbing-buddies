@@ -1,16 +1,10 @@
 'use client';
+import { UserRelationship } from '@prisma/client';
 import React, { useEffect, useState } from 'react';
 import FriendRequestItem from './FriendRequestItem';
 
-interface Friend {
-  id: number;
-  username: string;
-  profilePictureUrl: string | null;
-  climbingLevel: string | null;
-}
-
 export default function FriendRequestList() {
-  const [friendRequests, setFriendRequests] = useState<Friend[]>([]);
+  const [friendRequests, setFriendRequests] = useState<UserRelationship[]>([]);
 
   useEffect(() => {
     async function fetchFriendRequests() {
@@ -32,19 +26,21 @@ export default function FriendRequestList() {
       console.error('Error in fetchFriendRequests:', error);
     });
   }, []);
-
-  const handleAcceptFriendRequest = async (friendshipId: number) => {
+  const handleAcceptFriendRequest = async (
+    userId: number,
+    friendId: number,
+  ) => {
     try {
       // Make a request to the API to accept the friend request
       const response = await fetch('/api/acceptfriendrequest', {
         method: 'PUT',
-        body: JSON.stringify({ friendshipId }),
+        body: JSON.stringify({ userId, friendId }),
       });
 
       if (response.ok) {
         // If the request is successful, update the friend request list state by filtering out the accepted request
         setFriendRequests((prevRequests) =>
-          prevRequests.filter((request) => request.id !== friendshipId),
+          prevRequests.filter((request) => request.user_first_id !== friendId),
         );
       } else {
         // If the request fails, handle the error appropriately
@@ -55,18 +51,21 @@ export default function FriendRequestList() {
     }
   };
 
-  const handleRejectFriendRequest = async (friendshipId: number) => {
+  const handleRejectFriendRequest = async (
+    userId: number,
+    friendId: number,
+  ) => {
     try {
       // Make a request to the API to reject the friend request
       const response = await fetch('/api/rejectfriendrequest', {
         method: 'PUT',
-        body: JSON.stringify({ friendshipId }),
+        body: JSON.stringify({ userId, friendId }),
       });
 
       if (response.ok) {
         // If the request is successful, update the friend request list state by filtering out the rejected request
         setFriendRequests((prevRequests) =>
-          prevRequests.filter((request) => request.id !== friendshipId),
+          prevRequests.filter((request) => request.user_first_id !== friendId),
         );
       } else {
         // If the request fails, handle the error appropriately
@@ -85,7 +84,7 @@ export default function FriendRequestList() {
           {friendRequests.map((request) => (
             <FriendRequestItem
               key={`friend-${request.id}`}
-              friendRequest={request}
+              friendRequest={request as any}
               onAccept={handleAcceptFriendRequest}
               onReject={handleRejectFriendRequest}
             />

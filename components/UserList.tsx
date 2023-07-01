@@ -1,9 +1,12 @@
 import { getAllUsers } from '@/database/users';
+import { authorizeAndAuthenticate } from '@/utils/auth';
 import Image from 'next/image';
 import Link from 'next/link';
 import AddFriendButton from './AddFriendButton';
 
 export default async function UserList() {
+  const session = await authorizeAndAuthenticate();
+
   const users:
     | {
         id: number;
@@ -39,7 +42,7 @@ export default async function UserList() {
           <div>First Name: {user.firstName}</div>
           <div>Last Name: {user.lastName}</div>
           <div>Climbing Level: {user.climbingLevel}</div>
-          <AddFriendButton friendId={user.id} />
+          {user.id !== session.userId && <AddFriendButton friendId={user.id} />}
         </div>
       ))}
     </div>

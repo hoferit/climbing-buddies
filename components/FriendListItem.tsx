@@ -1,20 +1,9 @@
+import { User } from '@prisma/client';
 import Image from 'next/image';
 
-type Friendship = {
-  id: number;
-  user: User;
-};
-
-type User = {
-  id: number;
-  username: string;
-  profilePictureUrl: string | null;
-  climbingLevel: string | null;
-};
-
 type FriendListItemProps = {
-  friend: Friendship;
-  onRemoveFriend: (friendshipId: number) => void;
+  friend: User;
+  onRemoveFriend: (friendId: number) => void;
 };
 
 export default function FriendListItem({
@@ -27,15 +16,15 @@ export default function FriendListItem({
 
   return (
     <div>
-      {friend.user.profilePictureUrl !== null && (
+      {friend.profilePictureUrl !== null && (
         <Image
-          src={friend.user.profilePictureUrl}
-          alt={`Profile Picture of ${friend.user.username}`}
+          src={friend.profilePictureUrl}
+          alt={`Profile Picture of ${friend.username}`}
           width={100}
           height={100}
         />
       )}
-      <span>{friend.user.username}</span>
+      <span>{friend.username}</span>
       <button onClick={handleRemoveFriend}>Remove Friend</button>
     </div>
   );
