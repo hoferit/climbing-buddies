@@ -19,8 +19,7 @@ export async function acceptFriendRequest(userId: number, friendId: number) {
     throw new Error('Friend request not found');
   }
 }
-
-export async function addFriend(userId: number, friendId: number) {
+export async function createFriendRequest(userId: number, friendId: number) {
   // Check if the relationship already exists
   const existingRelationship = await prisma.userRelationship.findFirst({
     where: {
@@ -36,12 +35,12 @@ export async function addFriend(userId: number, friendId: number) {
     throw new Error('Relationship already exists');
   }
 
-  // Create the relationship
+  // Create the friend request
   await prisma.userRelationship.create({
     data: {
       user_first_id: userId,
       user_second_id: friendId,
-      type: 'friends',
+      type: 'pending_second_first',
     },
   });
 }
@@ -78,10 +77,16 @@ export async function retrieveFriendRequests(userId: number) {
       type: 'pending_second_first',
     },
     include: {
-      user_first: true,
+      user_first: {
+        select: {
+          id: true,
+          username: true,
+          profilePictureUrl: true,
+          climbingLevel: true,
+        },
+      },
     },
   });
-
   return friendRequests;
 }
 
