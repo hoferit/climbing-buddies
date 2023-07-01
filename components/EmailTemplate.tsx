@@ -1,14 +1,14 @@
 import * as React from 'react';
 
 interface EmailTemplateProps {
-  firstName: string;
+  username: string;
 }
 
 export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
-  firstName,
+  username,
 }) => (
   <div>
-    <h1>Welcome to ClimbingBuddies, {firstName}!</h1>
+    <h1>Welcome to ClimbingBuddies, {username}!</h1>
     <p>
       Thank you for signing up for our platform. We're excited to have you
       onboard. Start exploring other climbers and get connected today!

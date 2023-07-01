@@ -1,20 +1,25 @@
-// import { EmailTemplate } from '@/components/EmailTemplate';
-// import { NextResponse } from 'next/server';
-// import { Resend } from 'resend';
+import { EmailTemplate } from '@/components/EmailTemplate';
+import { NextResponse } from 'next/server';
+import { Resend } from 'resend';
 
-// const resend = new Resend(process.env.RESEND_API_KEY);
+interface EmailSendResponse {
+  id?: string;
+  error?: unknown;
+}
 
-// export async function POST(): Promise<NextResponse> {
-//   try {
-//     const data = await resend.emails.send({
-//       from: 'onboarding@mhoferit.com',
-//       to: 'morehofer@gmail.com',
-//       subject: 'Hello world',
-//       react: EmailTemplate({ firstName: 'Michi' }),
-//     });
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-//     return NextResponse.json(data);
-//   } catch (error) {
-//     return NextResponse.json({ error });
-//   }
-// }
+export async function POST(): Promise<NextResponse<EmailSendResponse>> {
+  try {
+    const data = await resend.emails.send({
+      from: 'Climbing Buddies <onboarding@hoferit.com>',
+      to: ['mhofer@gmail.com'],
+      subject: 'Welcome to Climbing Buddies',
+      react: EmailTemplate({ username: 'michi' }),
+    });
+
+    return NextResponse.json<EmailSendResponse>({ id: data.id });
+  } catch (error) {
+    return NextResponse.json<EmailSendResponse>({ error });
+  }
+}

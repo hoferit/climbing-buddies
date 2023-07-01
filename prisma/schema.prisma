@@ -25,15 +25,25 @@ model User {
   deletedAt                DateTime?
   eventsOrganised          Event[]
   eventParticipants        EventParticipant[] @relation("UserEvents")
-  sessions Session[] // each user can have multiple sessions
+  sessions                 Session[]          // each user can have multiple sessions
+
+  // Relation to UserRelationship as the first user
+  userRelationshipsAsFirstUser UserRelationship[] @relation("UserRelationshipsAsFirstUser")
+
+  // Relation to UserRelationship as the second user
+  userRelationshipsAsSecondUser UserRelationship[] @relation("UserRelationshipsAsSecondUser")
 }
 
 model UserRelationship {
-  user_first_id     Int
-  user_second_id    Int
-  type              RelationshipType
+  id                 Int      @id @default(autoincrement())
+  type               RelationshipType
+  createdAt          DateTime @default(now())
 
-  @@id([user_first_id, user_second_id])
+  user_first         User     @relation("UserRelationshipsAsFirstUser", fields: [user_first_id], references: [id])
+  user_first_id      Int
+
+  user_second        User     @relation("UserRelationshipsAsSecondUser", fields: [user_second_id], references: [id])
+  user_second_id     Int
 }
 
 enum RelationshipType {
@@ -44,6 +54,7 @@ enum RelationshipType {
   block_second_first
   block_both
 }
+
 
 
 model Session {

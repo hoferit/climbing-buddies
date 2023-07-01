@@ -2,6 +2,7 @@ import crypto from 'node:crypto';
 import { createSession } from '@/database/sessions';
 import { createUser, getUserByUsername } from '@/database/users';
 import { secureCookieOptions } from '@/utils/cookies';
+// import { sendWelcomeEmail } from '@/utils/emailutils';
 import { User } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { cookies } from 'next/headers';
@@ -111,6 +112,7 @@ export async function POST(
     value: session.token,
     ...secureCookieOptions,
   });
+  // await sendWelcomeEmail(newUser.email, newUser.username);
 
   // 7. return the new user to the client
   const handler = NextResponse.json({ user: newUser });

@@ -1,4 +1,4 @@
-import { acceptFriendship } from '@/database/friends';
+import { acceptFriendRequest } from '@/database/friends';
 import { authorizeAndAuthenticate } from '@/utils/auth';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -7,28 +7,32 @@ export async function PUT(request: NextRequest): Promise<NextResponse<any>> {
 
   // Check if there's an error in the authorization and authentication
   if (authResponse instanceof NextResponse) {
+    console.log(authResponse);
     return authResponse; // Return the error response
   }
-  // Parse the request body to get the friendship ID
-  const { friendshipId } = await request.json();
 
-  if (!friendshipId) {
+  // Parse the request body to get the friendship ID
+  const { userId, friendId } = await request.json();
+
+  if (!userId || !friendId) {
     return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
   }
 
   // Accept the friend request
-  const updatedFriendship = await acceptFriendship(friendshipId);
+  try {
+    await acceptFriendRequest(userId, friendId);
 
-  if (!updatedFriendship) {
+    // Return the success response
+    return NextResponse.json(
+      { message: 'Friend request accepted successfully' },
+      { status: 200 },
+    );
+  } catch (error) {
+    // Handle the error
+    console.error('Error accepting friend request:', error);
     return NextResponse.json(
       { error: 'Failed to accept friend request' },
       { status: 500 },
     );
   }
-
-  // Return the success response
-  return NextResponse.json(
-    { message: 'Friend request accepted successfully' },
-    { status: 200 },
-  );
 }

@@ -1,135 +1,113 @@
 import { prisma } from '@/utils/prismadb';
-import { Friendship, FriendshipStatus } from '@prisma/client';
+import { User } from '@prisma/client';
 
-export const createFriendship = async (
+export async function acceptFriendRequest(userId: number, friendId: number) {
+  // Find and update the relationship type to "friends"
+  const relationship = await prisma.userRelationship.updateMany({
+    where: {
+      user_first_id: friendId,
+      user_second_id: userId,
+      type: 'pending_first_second',
+    },
+    data: {
+      type: 'friends',
+    },
+  });
+
+  if (relationship.count === 0) {
+    // Relationship not found, handle the error
+    throw new Error('Friend request not found');
+  }
+}
+
+export async function addFriend(userId: number, friendId: number) {
+  // Check if the relationship already exists
+  const existingRelationship = await prisma.userRelationship.findFirst({
+    where: {
+      OR: [
+        { user_first_id: userId, user_second_id: friendId },
+        { user_first_id: friendId, user_second_id: userId },
+      ],
+    },
+  });
+
+  if (existingRelationship) {
+    // Relationship already exists, handle the error
+    throw new Error('Relationship already exists');
+  }
+
+  // Create the relationship
+  await prisma.userRelationship.create({
+    data: {
+      user_first_id: userId,
+      user_second_id: friendId,
+      type: 'friends',
+    },
+  });
+}
+
+export async function rejectFriendRequest(userId: number, friendId: number) {
+  // Find and delete the relationship
+  const relationship = await prisma.userRelationship.findFirst({
+    where: {
+      user_first_id: friendId,
+      user_second_id: userId,
+      type: 'pending_first_second',
+    },
+  });
+
+  if (!relationship) {
+    // Relationship not found, handle the error
+    throw new Error('Friend request not found');
+  }
+
+  await prisma.userRelationship.deleteMany({
+    where: {
+      user_first_id: friendId,
+      user_second_id: userId,
+      type: 'pending_first_second',
+    },
+  });
+}
+
+export async function retrieveFriendRequests(userId: number) {
+  // Find all the pending friend requests for the user
+  const friendRequests = await prisma.userRelationship.findMany({
+    where: {
+      user_second_id: userId,
+      type: 'pending_second_first',
+    },
+    include: {
+      user_first: true,
+    },
+  });
+
+  return friendRequests;
+}
+
+export async function retrieveFriendList(userId: number): Promise<User[]> {
+  const friendList = await prisma.userRelationship.findMany({
+    where: {
+      user_first_id: userId,
+      type: 'friends',
+    },
+    include: {
+      user_second: true,
+    },
+  });
+
+  return friendList.map((relationship) => relationship.user_second);
+}
+
+export async function removeFriend(
   userId: number,
   friendId: number,
-): Promise<Friendship | null> => {
-  try {
-    const friendship = await prisma.friendship.create({
-      data: {
-        userId: userId,
-        friendId: friendId,
-        sentById: userId,
-        receivedById: friendId,
-        status: FriendshipStatus.PENDING,
-      },
-      include: {
-        user: true,
-        friend: true,
-        sentBy: true,
-        receivedBy: true,
-      },
-    });
-
-    return friendship;
-  } catch (error) {
-    return null;
-  }
-};
-
-export const acceptFriendship = async (
-  friendshipId: number,
-): Promise<Friendship | null> => {
-  try {
-    const updatedFriendship = await prisma.friendship.update({
-      where: { id: friendshipId },
-      data: {
-        status: FriendshipStatus.ACCEPTED,
-      },
-      include: {
-        user: true,
-        friend: true,
-        sentBy: true,
-        receivedBy: true,
-      },
-    });
-
-    return updatedFriendship;
-  } catch (error) {
-    return null;
-  }
-};
-
-export const rejectFriendship = async (
-  friendshipId: number,
-): Promise<Friendship | null> => {
-  try {
-    const updatedFriendship = await prisma.friendship.update({
-      where: { id: friendshipId },
-      data: {
-        status: FriendshipStatus.REJECTED,
-      },
-      include: {
-        user: true,
-        friend: true,
-        sentBy: true,
-        receivedBy: true,
-      },
-    });
-
-    return updatedFriendship;
-  } catch (error) {
-    return null;
-  }
-};
-
-export const removeFriend = async (
-  userId: number,
-  friendshipId: number,
-): Promise<void> => {
-  try {
-    await prisma.friendship.deleteMany({
-      where: {
-        userId,
-        id: friendshipId,
-      },
-    });
-  } catch (error) {
-    throw new Error('Failed to remove friend');
-  }
-};
-
-export const getFriendList = async (userId: number) => {
-  try {
-    const friends = await prisma.friendship.findMany({
-      where: {
-        userId,
-        status: 'ACCEPTED', // Assuming only accepted friendships are considered in the friend list
-      },
-      include: {
-        friend: true,
-      },
-    });
-
-    // Extract the friend data from the list
-    const friendList = friends.map((friendship) => friendship.friend);
-
-    return friendList;
-  } catch (error) {
-    return null;
-  }
-};
-
-export const getFriendRequestsByUserId = async (userId: number) => {
-  try {
-    const friendRequests = await prisma.friendship.findMany({
-      where: {
-        receivedById: userId,
-        status: 'PENDING',
-      },
-      include: {
-        sentBy: true,
-      },
-    });
-
-    // Extract the friend request data from the list
-    const friendRequestList = friendRequests.map(
-      (friendRequest) => friendRequest.sentBy,
-    );
-
-    return friendRequestList;
-  } catch (error) {
-    return null;
-  }
-};
+): Promise<void> {
+  await prisma.userRelationship.deleteMany({
+    where: {
+      user_first_id: userId,
+      user_second_id: friendId,
+      type: 'friends',
+    },
+  });
+}

@@ -7,11 +7,11 @@ export async function DELETE(request: NextRequest): Promise<NextResponse<any>> {
     // Check authorization and authentication
     const session = await authorizeAndAuthenticate();
 
-    // Retrieve the friendship ID from the request query or body
-    const { friendshipId } = await request.json();
+    // Retrieve the friend ID from the request body
+    const { friendId } = await request.json();
 
     // Remove the friend from the database
-    await removeFriend(session.userId, friendshipId);
+    await removeFriend(session.userId, friendId);
 
     // Return a success response
     return NextResponse.json({ success: true }, { status: 200 });

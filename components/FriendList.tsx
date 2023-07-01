@@ -1,20 +1,25 @@
+'use client';
+import { revalidateTag } from 'next/cache';
 import React, { useEffect, useState } from 'react';
 import FriendListItem from './FriendListItem';
 
-interface User {
+interface Friend {
   id: number;
   username: string;
   profilePictureUrl: string | null;
   climbingLevel: string | null;
-}
-
-interface Friendship {
-  id: number;
   user: User;
 }
 
+type User = {
+  id: number;
+  username: string;
+  profilePictureUrl: string | null;
+  climbingLevel: string | null;
+};
+
 export default function FriendList() {
-  const [friends, setFriends] = useState<Friendship[]>([]);
+  const [friends, setFriends] = useState<Friend[]>([]);
 
   useEffect(() => {
     async function fetchFriendList() {
@@ -28,7 +33,7 @@ export default function FriendList() {
     }
 
     fetchFriendList().catch((error) => {
-      console.error('Error in retrieveFriendList:', error);
+      console.error('Error in fetchFriendList:', error);
     });
   }, []);
 
@@ -36,7 +41,7 @@ export default function FriendList() {
     try {
       // Make a request to the API to remove the friend
       const response = await fetch(
-        `/api/removefriend?friendId=${friendshipId}`,
+        `/api/removefriend?friendshipId=${friendshipId}`,
         {
           method: 'DELETE',
         },
@@ -47,6 +52,9 @@ export default function FriendList() {
         setFriends((prevFriends) =>
           prevFriends.filter((friend) => friend.id !== friendshipId),
         );
+
+        // Trigger revalidation of the friend list cache tag
+        revalidateTag('friend-list');
       } else {
         // If the request fails, handle the error appropriately
         console.error('Failed to remove friend:', response.statusText);
@@ -61,12 +69,16 @@ export default function FriendList() {
       <h2>Your Friends</h2>
       {friends.length > 0 ? (
         <ul>
-          {friends.map((friendship) => (
-            <FriendListItem
-              key={`friend-${friendship.id}`}
-              friend={friendship}
-              onRemoveFriend={handleRemoveFriend}
-            />
+          {friends.map((friend) => (
+            // Check if friend.user exists before rendering the FriendListItem
+            <React.Fragment key={`friend-${friend.id}`}>
+              {friend.user && (
+                <FriendListItem
+                  friend={friend}
+                  onRemoveFriend={handleRemoveFriend}
+                />
+              )}
+            </React.Fragment>
           ))}
         </ul>
       ) : (
