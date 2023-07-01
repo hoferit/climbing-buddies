@@ -13,8 +13,8 @@ interface FriendRequest {
 
 interface FriendRequestItemProps {
   friendRequest: FriendRequest;
-  onAccept: (friendshipId: number) => void;
-  onReject: (friendshipId: number) => void;
+  onAccept: (userId: number, friendId: number) => void;
+  onReject: (userId: number, friendId: number) => void;
 }
 
 export default function FriendRequestItem({
@@ -23,11 +23,11 @@ export default function FriendRequestItem({
   onReject,
 }: FriendRequestItemProps) {
   const handleAccept = () => {
-    onAccept(friendRequest.id);
+    onAccept(friendRequest.user_second_id, friendRequest.user_first_id);
   };
 
   const handleReject = () => {
-    onReject(friendRequest.id);
+    onReject(friendRequest.user_second_id, friendRequest.user_first_id);
   };
 
   return (
