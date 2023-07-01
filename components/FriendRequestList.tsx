@@ -36,7 +36,7 @@ export default function FriendRequestList() {
   const handleAcceptFriendRequest = async (friendshipId: number) => {
     try {
       // Make a request to the API to accept the friend request
-      const response = await fetch('/api/acceptrequest', {
+      const response = await fetch('/api/acceptfriendrequest', {
         method: 'PUT',
         body: JSON.stringify({ friendshipId }),
       });
@@ -58,7 +58,7 @@ export default function FriendRequestList() {
   const handleRejectFriendRequest = async (friendshipId: number) => {
     try {
       // Make a request to the API to reject the friend request
-      const response = await fetch('/api/rejectrequest', {
+      const response = await fetch('/api/rejectfriendrequest', {
         method: 'PUT',
         body: JSON.stringify({ friendshipId }),
       });

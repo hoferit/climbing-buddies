@@ -1,4 +1,4 @@
-import { getFriendRequestsByUserId } from '@/database/friends';
+import { retrieveFriendRequests } from '@/database/friends';
 import { authorizeAndAuthenticate } from '@/utils/auth';
 import { NextResponse } from 'next/server';
 
@@ -8,11 +8,11 @@ export async function GET(): Promise<NextResponse<any>> {
     const session = await authorizeAndAuthenticate();
 
     // Retrieve the friend requests for the user
-    const friendRequests = await getFriendRequestsByUserId(session.userId);
+    const friendRequests = await retrieveFriendRequests(session.userId);
 
     // Return the friend requests
     return NextResponse.json(
-      { friendRequests: friendRequests || [] },
+      { friendRequests: friendRequests },
       { status: 200 },
     );
   } catch (error) {
