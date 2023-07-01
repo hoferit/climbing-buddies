@@ -24,14 +24,27 @@ model User {
   updatedAt                DateTime           @updatedAt
   deletedAt                DateTime?
   eventsOrganised          Event[]
-  sentFriendRequests       Friendship[]           @relation("SentFriendRequests")
-  receivedFriendRequests   Friendship[]           @relation("ReceivedFriendRequests")
-  friends                  Friendship[]           @relation("UserFriends")
-  friendOfUser             Friendship[]           @relation("FriendOfUser")
-  // friends refers to the friends that the user has chosen, while friendOfUser refers to the users who have chosen the user as their friend. 
   eventParticipants        EventParticipant[] @relation("UserEvents")
   sessions Session[] // each user can have multiple sessions
 }
+
+model UserRelationship {
+  user_first_id     Int
+  user_second_id    Int
+  type              RelationshipType
+
+  @@id([user_first_id, user_second_id])
+}
+
+enum RelationshipType {
+  pending_first_second
+  pending_second_first
+  friends
+  block_first_second
+  block_second_first
+  block_both
+}
+
 
 model Session {
   id               Int      @id @default(autoincrement())
@@ -39,33 +52,6 @@ model Session {
   user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId           Int
   expire           DateTime
-}
-
-model Friendship {
-  id           Int      @id @default(autoincrement())
-  status       FriendshipStatus
-  createdAt    DateTime @default(now())
-
-  user         User     @relation("UserFriends", fields: [userId], references: [id])
-  userId       Int
-
-  friend       User     @relation("FriendOfUser", fields: [friendId], references: [id])
-  friendId     Int
-
-
-  sentBy       User     @relation("SentFriendRequests", fields: [sentById], references: [id])
-  sentById     Int
-
-  receivedBy   User     @relation("ReceivedFriendRequests", fields: [receivedById], references: [id])
-  receivedById Int
-
-  @@unique([userId, friendId]) // enforce uniqueness on the combination of userId and friendId
-}
-
-enum FriendshipStatus {
-  PENDING
-  ACCEPTED
-  REJECTED
 }
 
 
