@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { getAllUsers } from '../database/users';
-import { authorizeAndAuthenticate } from '../utils/auth';
+import { getAllUsers } from '../../../database/users';
+import { authorizeAndAuthenticate } from '../../../utils/auth';
 import AddFriendButton from './AddFriendButton';
 
 export default async function UserList() {

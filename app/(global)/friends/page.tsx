@@ -1,4 +1,4 @@
-import FriendListAndRequest from './FriendListAndRequest';
+import FriendListAndRequest from './components/FriendListAndRequest';
 
 export default function FriendsPage() {
   return (

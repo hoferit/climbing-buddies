@@ -5,7 +5,7 @@ import { enqueueSnackbar, SnackbarProvider } from 'notistack';
 import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as z from 'zod';
-import ImageUpload from './ImageUpload';
+import ImageUpload from '../../../components/ImageUpload';
 
 type ProfileInputs = {
   firstName: string;
