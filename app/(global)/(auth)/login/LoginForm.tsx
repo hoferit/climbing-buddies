@@ -2,11 +2,11 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import { useSnackbar } from 'notistack';
+import { enqueueSnackbar, SnackbarProvider } from 'notistack';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as z from 'zod';
-import { LoginResponseBodyPost } from '../app/api/(auth)/login/route';
-import { getSafeReturnToPath } from '../utils/validation';
+import { getSafeReturnToPath } from '../../../../utils/validation';
+import { LoginResponseBodyPost } from '../../../api/(auth)/login/route';
 
 const formSchema = z.object({
   username: z.string().min(1, 'Username is required').max(100),
@@ -19,7 +19,6 @@ type FormSchemaType = z.infer<typeof formSchema>;
 
 export function LoginForm(props: Props) {
   const router = useRouter();
-  const { enqueueSnackbar } = useSnackbar();
   async function loginData(data: FormSchemaType) {
     const response = await fetch('/api/login', {
       method: 'POST',
@@ -59,6 +58,7 @@ export function LoginForm(props: Props) {
 
   return (
     <section className="bg-primary-background dark:bg-gray-900">
+      <SnackbarProvider />
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">

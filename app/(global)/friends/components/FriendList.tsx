@@ -1,10 +1,12 @@
 'use client';
 import { User } from '@prisma/client';
+import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import FriendListItem from './FriendListItem';
 
 export default function FriendList() {
   const [friends, setFriends] = useState<User[]>([]);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     async function fetchFriendList() {
@@ -13,14 +15,16 @@ export default function FriendList() {
         const data = await response.json();
         setFriends(data.friendList);
       } catch (error) {
-        console.error('Error retrieving friend list:', error);
+        enqueueSnackbar(`An error occurred: ${error}`, { variant: 'error' });
+        throw error;
       }
     }
 
     fetchFriendList().catch((error) => {
-      console.error('Error in fetchFriendList:', error);
+      enqueueSnackbar(`An error occurred: ${error}`, { variant: 'error' });
     });
-  }, []);
+  }, [enqueueSnackbar]);
+  // If an error occurred, throw it here so the error boundary can catch it
 
   const handleRemoveFriend = async (friendId: number) => {
     try {
@@ -41,7 +45,8 @@ export default function FriendList() {
         console.error('Failed to reject friend request:', response.statusText);
       }
     } catch (error) {
-      console.error('Error rejecting friend request:', error);
+      enqueueSnackbar(`An error occurred: ${Error}`, { variant: 'error' });
+      throw error;
     }
   };
 

@@ -1,6 +1,5 @@
 import './globals.css';
 import { Inter } from 'next/font/google';
-import { SnackbarProvider } from 'notistack';
 import Footer from '../components/layout/Footer';
 import Header from '../components/layout/Header';
 
@@ -23,7 +22,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Header />
-        <SnackbarProvider>{children}</SnackbarProvider>
+        {children}
         <Footer />
       </body>
     </html>
