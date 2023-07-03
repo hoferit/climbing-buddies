@@ -1,6 +1,6 @@
-import { EditProfileForm } from '@/components/ProfileForm';
-import { getValidSessionByToken } from '@/database/sessions';
 import { cookies } from 'next/headers';
+import { EditProfileForm } from '../../../components/ProfileForm';
+import { getValidSessionByToken } from '../../../database/sessions';
 
 export default async function profilePage() {
   const sessionTokenCookie = cookies().get('sessionToken');

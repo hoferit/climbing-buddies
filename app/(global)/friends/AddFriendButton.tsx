@@ -1,4 +1,7 @@
 'use client';
+
+import { useSnackbar } from 'notistack';
+
 type AddFriendButtonProps = {
   userId: number;
   friendId: number;
@@ -8,6 +11,8 @@ export default function AddFriendButton({
   userId,
   friendId,
 }: AddFriendButtonProps) {
+  const { enqueueSnackbar } = useSnackbar();
+
   const handleAddFriend = async () => {
     try {
       const response = await fetch('/api/createfriendrequest', {
@@ -18,15 +23,24 @@ export default function AddFriendButton({
         body: JSON.stringify({ userId, friendId }),
       });
 
+      const data = await response.json(); // Parse the response into JSON
+
       if (response.ok) {
         // Friend added successfully
         console.log('Friend added!');
+        enqueueSnackbar('Friend added successfully!', { variant: 'success' });
       } else {
         // Failed to add friend
         console.error('Failed to add friend');
+        enqueueSnackbar(`Failed to add friend: ${data.error}`, {
+          variant: 'error',
+        });
       }
     } catch (error) {
       console.error('Error adding friend:', error);
+      enqueueSnackbar(`Error adding friend: ${Error}`, {
+        variant: 'error',
+      });
     }
   };
 

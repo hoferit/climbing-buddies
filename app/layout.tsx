@@ -1,7 +1,8 @@
 import './globals.css';
-import Footer from '@/components/layout/Footer';
-import Header from '@/components/layout/Header';
 import { Inter } from 'next/font/google';
+import { SnackbarProvider } from 'notistack';
+import Footer from '../components/layout/Footer';
+import Header from '../components/layout/Header';
 
 const inter = Inter({ subsets: ['latin'], preload: true });
 
@@ -22,7 +23,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Header />
-        {children}
+        <SnackbarProvider>{children}</SnackbarProvider>
         <Footer />
       </body>
     </html>
