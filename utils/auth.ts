@@ -3,7 +3,7 @@ import { getValidSessionByToken } from '../database/sessions';
 import { AuthRequiredError } from '../lib/exceptions';
 
 export async function authorizeAndAuthenticate() {
-  // Check if the user is authenticated
+  // Check if user is authenticated
   const sessionTokenCookie = cookies().get('sessionToken');
 
   if (!sessionTokenCookie) {
@@ -17,4 +17,16 @@ export async function authorizeAndAuthenticate() {
   }
 
   return session; // Return the session object
+}
+
+export async function fetchWithAuthCheck(url: string, options: RequestInit) {
+  const response = await fetch(url, options);
+
+  if (response.status === 401) {
+    // user is not authenticated, show alert
+
+    throw new Error('Unauthorized'); // So caller knows to not process the response
+  }
+
+  return response;
 }

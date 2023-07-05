@@ -112,23 +112,28 @@ export async function createFriendRequest(userId: number, friendId: number) {
 
 export async function retrieveFriendRequests(userId: number) {
   // Find all the pending friend requests for the user
-  const friendRequests = await prisma.userRelationship.findMany({
-    where: {
-      user_second_id: userId,
-      type: 'pending_second_first',
-    },
-    include: {
-      user_first: {
-        select: {
-          id: true,
-          username: true,
-          profilePictureUrl: true,
-          climbingLevel: true,
+  try {
+    const friendRequests = await prisma.userRelationship.findMany({
+      where: {
+        user_second_id: userId,
+        type: 'pending_second_first',
+      },
+      include: {
+        user_first: {
+          select: {
+            id: true,
+            username: true,
+            profilePictureUrl: true,
+            climbingLevel: true,
+          },
         },
       },
-    },
-  });
-  return friendRequests;
+    });
+    return friendRequests;
+  } catch (error) {
+    console.error('Failed to retrieve friend requests:', error);
+    return []; // Return an empty array in case of error
+  }
 }
 
 export async function retrieveFriendList(userId: number): Promise<User[]> {

@@ -2,53 +2,82 @@
 import { User } from '@prisma/client';
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
+import { fetchWithAuthCheck } from '../../../../utils/fetchwithauthcheck';
 import FriendListItem from './FriendListItem';
 
 export default function FriendList() {
+  const [loading, setLoading] = useState(true);
   const [friends, setFriends] = useState<User[]>([]);
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     async function fetchFriendList() {
       try {
-        const response = await fetch('/api/retrievefriendlist');
+        const response = await fetchWithAuthCheck('/api/retrievefriendlist', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          setLoading(false);
+          return;
+        }
+
         const data = await response.json();
         setFriends(data.friendList);
+        setLoading(false);
       } catch (error) {
-        enqueueSnackbar(`An error occurred: ${error}`, { variant: 'error' });
-        throw error;
+        if (error instanceof Error && error.message === 'Unauthorized') {
+          enqueueSnackbar('You need to log in to view this page.', {
+            variant: 'warning',
+          });
+        } else {
+          enqueueSnackbar('An error occurred!', { variant: 'error' });
+          throw error;
+        }
       }
     }
 
-    fetchFriendList().catch((error) => {
-      enqueueSnackbar(`An error occurred: ${error}`, { variant: 'error' });
-    });
+    fetchFriendList().catch(() => {}); // dummy catch for ESLint
   }, [enqueueSnackbar]);
-  // If an error occurred, throw it here so the error boundary can catch it
 
   const handleRemoveFriend = async (friendId: number) => {
     try {
-      // Send a POST request to the API route with the friend ID in the request body
-      const response = await fetch('/api/removefriend', {
+      const response = await fetchWithAuthCheck('/api/removefriend', {
         method: 'POST',
         body: JSON.stringify({ friendId }),
       });
 
-      // Check if the response was successful
       if (response.ok) {
-        // If the request is successful, update the friend request list state by filtering out the rejected request
         setFriends((prevRequests) =>
           prevRequests.filter((request) => request.id !== friendId),
         );
+        enqueueSnackbar('Friend removed!', { variant: 'success' });
       } else {
-        // If the request fails, handle the error appropriately
-        console.error('Failed to reject friend request:', response.statusText);
+        const errorData = await response.json();
+        enqueueSnackbar(`Error removing friend: ${errorData.message}`, {
+          variant: 'error',
+        });
       }
     } catch (error) {
-      enqueueSnackbar(`An error occurred: ${Error}`, { variant: 'error' });
-      throw error;
+      if (error instanceof Error) {
+        if (error.message === 'Unauthorized') {
+          enqueueSnackbar('You need to log in to view this page.', {
+            variant: 'warning',
+          });
+        } else {
+          enqueueSnackbar('Error removing friend!', { variant: 'error' });
+          throw error;
+        }
+      }
     }
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
@@ -56,7 +85,6 @@ export default function FriendList() {
       {friends.length > 0 ? (
         <ul>
           {friends.map((friend) => (
-            // Check if friend.user exists before rendering the FriendListItem
             <div key={`friend-${friend.id}`}>
               <FriendListItem
                 friend={friend}
