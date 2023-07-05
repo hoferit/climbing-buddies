@@ -1,5 +1,6 @@
 'use client';
 import { User } from '@prisma/client';
+import { notFound } from 'next/navigation';
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { fetchWithAuthCheck } from '../../../../utils/fetchwithauthcheck';
@@ -22,7 +23,7 @@ export default function FriendList() {
 
         if (!response.ok) {
           setLoading(false);
-          return;
+          notFound();
         }
 
         const data = await response.json();
@@ -30,18 +31,15 @@ export default function FriendList() {
         setLoading(false);
       } catch (error) {
         if (error instanceof Error && error.message === 'Unauthorized') {
-          enqueueSnackbar('You need to log in to view this page.', {
-            variant: 'warning',
-          });
+          throw error;
         } else {
-          enqueueSnackbar('An error occurred!', { variant: 'error' });
           throw error;
         }
       }
     }
 
     fetchFriendList().catch(() => {}); // dummy catch for ESLint
-  }, [enqueueSnackbar]);
+  }, []);
 
   const handleRemoveFriend = async (friendId: number) => {
     try {

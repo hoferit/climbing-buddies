@@ -1,12 +1,10 @@
 'use client';
 
-import Link from 'next/link';
-
 type ErrorProps = {
   error: Error;
+  reset: () => void;
 };
-
-export default function Error({ error }: ErrorProps) {
+export default function GlobalError({ error, reset }: ErrorProps) {
   return (
     <div className="grid h-screen px-4 bg-white place-content-center">
       <div className="text-center">
@@ -20,12 +18,12 @@ export default function Error({ error }: ErrorProps) {
           {error.message || 'You must be logged in to access the page'}
         </p>
 
-        <Link
-          href="/login"
+        <button
+          onClick={() => reset()}
           className="inline-block bg-primary text-secondary hover:bg-secondary hover:text-primary border border-input focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
         >
-          Login
-        </Link>
+          Try Again
+        </button>
       </div>
     </div>
   );

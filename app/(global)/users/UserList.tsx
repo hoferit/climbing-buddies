@@ -1,6 +1,7 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { PublicUser } from '../../api/(user)/getusers/route';
 import AddFriendButton from './AddFriendButton';
@@ -8,6 +9,7 @@ import AddFriendButton from './AddFriendButton';
 export default function UserList() {
   const [users, setUsers] = useState<PublicUser[]>([]);
   const [currentUser, setCurrentUser] = useState<number | null>(null);
+  const [error, setError] = useState<Error | null>(null);
 
   const [loading, setLoading] = useState(true);
 
@@ -15,7 +17,7 @@ export default function UserList() {
     async function fetchUsersAndCurrentUser() {
       try {
         // fetch the current logged in user's data
-        const currentUserResponse = await fetch('/api/getuserbyid', {
+        const currentUserResponse = await fetch('/api/getcurrentuser', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -25,10 +27,12 @@ export default function UserList() {
         if (currentUserResponse.ok) {
           const currentUserData = await currentUserResponse.json();
           setCurrentUser(currentUserData.user.id);
+        } else {
+          throw new Error('Failed to fetch current user');
         }
 
         // fetch all users
-        const allUsersResponse = await fetch('/api/getallusers', {
+        const allUsersResponse = await fetch('/api/getusers', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -38,14 +42,30 @@ export default function UserList() {
         if (allUsersResponse.ok) {
           const allUsersData = await allUsersResponse.json();
           setUsers(allUsersData.users);
+        } else {
+          throw new Error('Failed to fetch all users');
         }
 
         setLoading(false);
-      } catch (error) {}
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err);
+        } else {
+          setError(new Error('An unexpected error occurred.'));
+        }
+      }
     }
 
-    fetchUsersAndCurrentUser().catch(() => {}); // dummy catch for ESLint
+    fetchUsersAndCurrentUser().catch((err) =>
+      setError(
+        err instanceof Error ? err : new Error('An unexpected error occurred.'),
+      ),
+    );
   }, []);
+
+  if (error) {
+    notFound(); // <- throw the error so the error boundary can catch it
+  }
 
   if (loading) {
     return <div>Loading...</div>;
