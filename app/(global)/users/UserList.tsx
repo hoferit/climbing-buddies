@@ -17,6 +17,7 @@ export default function UserList() {
     async function fetchUsersAndCurrentUser() {
       try {
         // fetch the current logged in user's data
+        console.log('Fetching current user...');
         const currentUserResponse = await fetch('/api/getcurrentuser', {
           method: 'GET',
           headers: {
@@ -26,12 +27,13 @@ export default function UserList() {
 
         if (currentUserResponse.ok) {
           const currentUserData = await currentUserResponse.json();
-          setCurrentUser(currentUserData.user.id);
+          setCurrentUser(currentUserData.userId);
         } else {
           throw new Error('Failed to fetch current user');
         }
 
         // fetch all users
+        console.log('Fetching all users...');
         const allUsersResponse = await fetch('/api/getusers', {
           method: 'GET',
           headers: {
@@ -42,6 +44,7 @@ export default function UserList() {
         if (allUsersResponse.ok) {
           const allUsersData = await allUsersResponse.json();
           setUsers(allUsersData.users);
+          console.log('All users fetched:', allUsersData.users);
         } else {
           throw new Error('Failed to fetch all users');
         }
@@ -50,6 +53,7 @@ export default function UserList() {
       } catch (err) {
         if (err instanceof Error) {
           setError(err);
+          console.error('An error occurred:', err.message);
         } else {
           setError(new Error('An unexpected error occurred.'));
         }
@@ -62,7 +66,6 @@ export default function UserList() {
       ),
     );
   }, []);
-
   if (error) {
     notFound(); // <- throw the error so the error boundary can catch it
   }

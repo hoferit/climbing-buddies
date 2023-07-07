@@ -20,15 +20,9 @@ dependencies:
   bcrypt:
     specifier: ^5.1.0
     version: 5.1.0
-  class-variance-authority:
-    specifier: ^0.6.1
-    version: 0.6.1
   clsx:
     specifier: ^1.2.1
     version: 1.2.1
-  lucide-react:
-    specifier: ^0.246.0
-    version: 0.246.0(react@18.2.0)
   next:
     specifier: 13.4.7
     version: 13.4.7(@babel/core@7.22.6)(react-dom@18.2.0)(react@18.2.0)(sass@1.63.6)
@@ -1254,12 +1248,6 @@ packages:
     resolution: {integrity: sha512-eXTggHWSooYhq49F2opQhuHWgzucfF2YgODK4e1566GQs5BIfP30B0oenwBJHfWxAs2fyPB1s7Mg949zLf61Yw==}
     engines: {node: '>=8'}
     dev: true
-
-  /class-variance-authority@0.6.1:
-    resolution: {integrity: sha512-eurOEGc7YVx3majOrOb099PNKgO3KnKSApOprXI4BTq6bcfbqbQXPN2u+rPPmIJ2di23bMwhk0SxCCthBmszEQ==}
-    dependencies:
-      clsx: 1.2.1
-    dev: false
 
   /clean-regexp@1.0.0:
     resolution: {integrity: sha512-GfisEZEJvzKrmGWkvfhgzcz/BllN1USeqD2V6tg14OAOgaCD2Z/PUEuxnAZ/nPvmaHRG7a8y77p1T/IRQ4D1Hw==}
@@ -3010,14 +2998,6 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       yallist: 4.0.0
-
-  /lucide-react@0.246.0(react@18.2.0):
-    resolution: {integrity: sha512-0OkIG28coMDnQfy9+vYr/+8BY42KpBO05WkslfIEJuDxi/qwcJfUXsG+nhONGMAUs/ADR5fE8upHBw76O/yMPg==}
-    peerDependencies:
-      react: ^16.5.1 || ^17.0.0 || ^18.0.0
-    dependencies:
-      react: 18.2.0
-    dev: false
 
   /make-dir@3.1.0:
     resolution: {integrity: sha512-g3FeP20LNwhALb/6Cz6Dd4F2ngze0jz7tbzrD2wAV+o9FeNHe4rL+yK2md0J/fiSf1sa1ADhXqi5+oVwOM/eGw==}
