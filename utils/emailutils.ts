@@ -12,7 +12,7 @@ export async function sendWelcomeEmail(
       from: 'Climbing Buddies <welcome@hoferit.com>',
       to: [email],
       subject: 'Welcome to Climbing Buddies',
-      react: EmailTemplate({ username }),
+      react: EmailTemplate({ username }) as any,
     });
   } catch (error) {
     console.error('Error sending welcome email:', error);
