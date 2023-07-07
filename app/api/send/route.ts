@@ -15,7 +15,7 @@ export async function POST(): Promise<NextResponse<EmailSendResponse>> {
       from: 'Climbing Buddies <onboarding@hoferit.com>',
       to: ['mhofer@gmail.com'],
       subject: 'Welcome to Climbing Buddies',
-      react: EmailTemplate({ username: 'michi' }),
+      react: EmailTemplate({ username: 'michi' }) as any,
     });
 
     return NextResponse.json<EmailSendResponse>({ id: data.id });
