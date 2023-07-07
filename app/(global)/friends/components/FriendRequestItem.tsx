@@ -1,5 +1,6 @@
 import { User } from '@prisma/client';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 interface FriendRequest {
   id: number;
@@ -21,12 +22,15 @@ export default function FriendRequestItem({
   onAccept,
   onReject,
 }: FriendRequestItemProps) {
+  const router = useRouter();
   const handleAccept = () => {
     onAccept(friendRequest.user_second_id, friendRequest.user_first_id);
+    router.refresh();
   };
 
   const handleReject = () => {
     onReject(friendRequest.user_second_id, friendRequest.user_first_id);
+    router.refresh();
   };
 
   return (

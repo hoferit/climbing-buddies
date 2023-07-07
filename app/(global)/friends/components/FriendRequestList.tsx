@@ -1,6 +1,5 @@
 'use client';
 import { UserRelationship } from '@prisma/client';
-import { notFound } from 'next/navigation';
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { fetchWithAuthCheck } from '../../../../utils/fetchwithauthcheck';
@@ -26,15 +25,14 @@ export default function FriendRequestList() {
         const data = await response.json();
         setFriendRequests(data.friendRequests);
       } catch (error) {
-        notFound();
-        // If error happens gets directed to error.js
+        enqueueSnackbar(`User not logged in ${error}`, { variant: 'warning' }); // If error happens gets directed to error.js
       } finally {
         setLoading(false);
       }
     }
 
     fetchFriendRequests().catch(() => {}); // dummy catch for ESLint
-  }, []);
+  }, [enqueueSnackbar]);
 
   const handleAcceptFriendRequest = async (
     userId: number,
