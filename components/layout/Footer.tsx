@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="flex items-center justify-between flex-wrap bg-primary p-6 mt-4 sticky bottom-0">
+    <footer className="flex items-center justify-between flex-wrap bg-primary p-6 mt-4 fixed bottom-0 w-full">
       <div className="flex items-center flex-shrink-0 text-secondary mr-6">
         <p className="font-semibold text-sm tracking-tight">
           © {new Date().getFullYear()} Climbing Buddies. All rights reserved.
