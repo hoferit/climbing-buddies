@@ -76,40 +76,68 @@ export default function UserList() {
 
   return (
     <section className="bg-primary-background dark:bg-gray-900">
-      <div className="flex flex-col items-center justify-center px-6 mx-auto md:h-screen">
-        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+      <div className="flex flex-col items-center justify-center px-6 mx-auto">
+        <div className="w-full bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+            <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               User List
             </h1>
-            {users.map((user) => (
-              <div
-                className="space-y-2 md:space-y-4"
-                key={`user-div-${user.id}`}
-              >
-                <Link href={`/users/${user.username}`}>{user.username}</Link>
-                {user.profilePictureUrl ? (
-                  <Image
-                    alt="uploaded"
-                    src={user.profilePictureUrl}
-                    unoptimized={true}
-                    width={250}
-                    height={250}
-                  />
-                ) : (
-                  <p>No profile picture available</p>
-                )}
-                <div>First Name: {user.firstName}</div>
-                <div>Last Name: {user.lastName}</div>
-                <div>Climbing Level: {user.climbingLevel}</div>
-                {user.id !== currentUser && (
-                  <AddFriendButton
-                    userId={currentUser ?? 0}
-                    friendId={user.id}
-                  />
-                )}
-              </div>
-            ))}
+            <table className="w-full table-auto">
+              <tbody className="divide-y divide-gray-200">
+                {users.map((user, index) => (
+                  <tr
+                    key={`user-tr-${user.id}`}
+                    className={index % 2 === 0 ? 'bg-white' : 'bg-grey-50'}
+                  >
+                    <td className="px-5 py-5 text-sm">
+                      <div className="flex items-center">
+                        <div className="flex-shrink-0 w-20 h-20">
+                          {user.profilePictureUrl ? (
+                            <Link href={`/users/${user.username}`}>
+                              <Image
+                                className="w-full h-full rounded-full"
+                                alt="uploaded"
+                                src={user.profilePictureUrl}
+                                unoptimized={true}
+                                width={100}
+                                height={100}
+                              />
+                            </Link>
+                          ) : (
+                            <p>No profile picture available</p>
+                          )}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="py-5 text-sm">
+                      <p className="text-gray-900 whitespace-no-wrap">
+                        <strong>Username:</strong> {user.username}
+                      </p>
+                    </td>
+                    <td className="hidden xl:table-cell py-5 text-sm">
+                      <p className="text-gray-900 whitespace-no-wrap">
+                        <strong>First Name:</strong> {user.firstName}
+                      </p>
+                    </td>
+                    <td className="hidden xl:table-cell py-5 text-sm">
+                      <p className="text-gray-900 whitespace-no-wrap">
+                        <strong>Last Name:</strong> {user.lastName}
+                      </p>
+                    </td>
+                    <td className="hidden md:table-cell text-center py-5 text-sm">
+                      <div className="flex justify-around">
+                        {user.id !== currentUser && (
+                          <AddFriendButton
+                            userId={currentUser ?? 0}
+                            friendId={user.id}
+                          />
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
