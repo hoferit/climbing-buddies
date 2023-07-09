@@ -75,7 +75,7 @@ export default function UserList() {
   }
 
   return (
-    <section className="bg-primary-background dark:bg-gray-900">
+    <section className="bg-primary-background dark:bg-gray-900 mb-4">
       <div className="flex flex-col items-center justify-center px-6 mx-auto">
         <div className="w-full bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">

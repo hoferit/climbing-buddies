@@ -78,22 +78,36 @@ export default function FriendList() {
   }
 
   return (
-    <div>
-      <h2>Your Friends</h2>
-      {friends.length > 0 ? (
-        <ul>
-          {friends.map((friend) => (
-            <div key={`friend-${friend.id}`}>
-              <FriendListItem
-                friend={friend}
-                onRemoveFriend={handleRemoveFriend}
-              />
-            </div>
-          ))}
-        </ul>
-      ) : (
-        <p>No friends yet.</p>
-      )}
-    </div>
+    <section className="bg-primary-background dark:bg-gray-900">
+      <div className="flex flex-col items-center justify-center px-6 mx-auto">
+        <div className="w-full bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
+          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+            <h2 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+              Your Friends
+            </h2>
+            {friends.length > 0 ? (
+              <table className="w-full table-auto">
+                <tbody className="divide-y divide-gray-200">
+                  {friends.map((friend, index) => (
+                    <tr
+                      key={`user-tr-${friend.id}`}
+                      className={index % 2 === 0 ? 'bg-white' : 'bg-grey-50'}
+                    >
+                      <FriendListItem
+                        key={`friend-${friend.id}`}
+                        friend={friend}
+                        onRemoveFriend={handleRemoveFriend}
+                      />
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <p className="text-center">No friends yet.</p>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
