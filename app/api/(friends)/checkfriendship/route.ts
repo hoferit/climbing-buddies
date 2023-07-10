@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { checkFriendship } from '../../../../database/friends';
 import { authorizeAndAuthenticate } from '../../../../utils/auth';
 
-export async function GET(request: NextRequest): Promise<NextResponse<any>> {
+export async function POST(request: NextRequest): Promise<NextResponse<any>> {
   try {
     // Check authorization and authentication
     await authorizeAndAuthenticate();
