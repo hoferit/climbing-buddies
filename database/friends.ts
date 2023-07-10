@@ -198,3 +198,25 @@ export async function removeFriend(userId: number, friendId: number) {
     where: { id: relationship.id },
   });
 }
+
+export async function checkFriendship(userId: number, friendId: number) {
+  // Check if a friendship exists between two users
+  try {
+    const friendship = await prisma.userRelationship.findFirst({
+      where: {
+        OR: [
+          { user_first_id: userId, user_second_id: friendId },
+          { user_first_id: friendId, user_second_id: userId },
+        ],
+        type: {
+          in: ['friends', 'pending_first_second', 'pending_second_first'],
+        },
+      },
+    });
+
+    return Boolean(friendship);
+  } catch (error) {
+    console.error('Failed to check friendship:', error);
+    return false; // Return false in case of error
+  }
+}
