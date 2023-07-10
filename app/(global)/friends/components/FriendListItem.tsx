@@ -37,22 +37,22 @@ export default function FriendListItem({
         </div>
       </td>
 
-      <td className="py-5 text-sm">
+      <td className="py-5">
         <p className="text-gray-900 whitespace-no-wrap">
           <strong>Username:</strong> {friend.username}
         </p>
       </td>
-      <td className="hidden xl:table-cell py-5 text-sm">
+      <td className="hidden xl:table-cell py-5">
         <p className="text-gray-900 whitespace-no-wrap">
           <strong>First Name:</strong> {friend.firstName}
         </p>
       </td>
-      <td className="hidden xl:table-cell py-5 text-sm">
+      <td className="hidden xl:table-cell py-5">
         <p className="text-gray-900 whitespace-no-wrap">
           <strong>Last Name:</strong> {friend.lastName}
         </p>
       </td>
-      <td className="text-center py-5 text-sm">
+      <td className="text-center py-5">
         <button
           className="bg-primary text-secondary hover:bg-secondary hover:text-primary border border-input focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
           onClick={handleRemoveFriend}

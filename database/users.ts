@@ -40,6 +40,10 @@ export const getUserByUsername = async (username: string) => {
         id: true,
         username: true,
         email: true,
+        firstName: true,
+        lastName: true,
+        climbingLevel: true,
+        profilePictureUrl: true,
       },
     });
 
