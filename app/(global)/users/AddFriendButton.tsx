@@ -25,8 +25,7 @@ export default function AddFriendButton({
 
       if (response.ok) {
         // Friend added successfully
-        console.log('Friend added!');
-        enqueueSnackbar('Friend added successfully!', { variant: 'success' });
+        enqueueSnackbar('Friend request sent!', { variant: 'success' });
       } else {
         // Failed to add friend
         console.error('Failed to add friend');

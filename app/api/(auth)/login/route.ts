@@ -29,7 +29,6 @@ export async function POST(
   // 2. verify the user data and check that the name is not taken
   if (!result.success) {
     // zod send you details about the error
-    // console.log(result.error);
     return NextResponse.json(
       {
         error: 'username or password missing',
@@ -45,7 +44,6 @@ export async function POST(
 
   if (!userWithPasswordHash) {
     // zod send you details about the error
-    // console.log(result.error);
     return NextResponse.json(
       {
         error: 'user or password not valid',

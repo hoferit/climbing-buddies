@@ -18,6 +18,5 @@ export default async function LoginPage({ searchParams }: Props) {
   // 3. Either redirect or render the login form
   if (session) redirect('/');
 
-  // console.log('My search params', searchParams);
   return <LoginForm returnTo={searchParams.returnTo} />;
 }

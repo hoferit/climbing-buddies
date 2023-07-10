@@ -7,7 +7,6 @@ export async function PUT(request: NextRequest): Promise<NextResponse<any>> {
 
   // Check if there's an error in the authorization and authentication
   if (authResponse instanceof NextResponse) {
-    console.log(authResponse);
     return authResponse; // Return the error response
   }
 

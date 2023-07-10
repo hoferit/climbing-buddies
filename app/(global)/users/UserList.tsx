@@ -17,7 +17,6 @@ export default function UserList() {
     async function fetchUsersAndCurrentUser() {
       try {
         // fetch the current logged in user's data
-        console.log('Fetching current user...');
         const currentUserResponse = await fetch('/api/getcurrentuser', {
           method: 'GET',
           headers: {
@@ -33,7 +32,6 @@ export default function UserList() {
         }
 
         // fetch all users
-        console.log('Fetching all users...');
         const allUsersResponse = await fetch('/api/getusers', {
           method: 'GET',
           headers: {
@@ -44,7 +42,6 @@ export default function UserList() {
         if (allUsersResponse.ok) {
           const allUsersData = await allUsersResponse.json();
           setUsers(allUsersData.users);
-          console.log('All users fetched:', allUsersData.users);
         } else {
           throw new Error('Failed to fetch all users');
         }
