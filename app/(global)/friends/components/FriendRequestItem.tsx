@@ -34,7 +34,7 @@ export default function FriendRequestItem({
   };
 
   return (
-    <li key={`friend-request-${friendRequest.id}`} className="py-5 text-sm">
+    <li key={`friend-request-${friendRequest.id}`} className="py-5">
       <div className="flex items-center">
         <div className="flex-shrink-0 w-20 h-20">
           {!!friendRequest.user_first.profilePictureUrl && (

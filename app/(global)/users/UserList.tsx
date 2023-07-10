@@ -86,7 +86,7 @@ export default function UserList() {
                     key={`user-tr-${user.id}`}
                     className={index % 2 === 0 ? 'bg-white' : 'bg-grey-50'}
                   >
-                    <td className="px-5 py-5 text-sm">
+                    <td className="px-5 py-5">
                       <div className="flex items-center">
                         <div className="flex-shrink-0 w-20 h-20">
                           {user.profilePictureUrl ? (
@@ -106,22 +106,22 @@ export default function UserList() {
                         </div>
                       </div>
                     </td>
-                    <td className="py-5 text-sm">
+                    <td className="py-5">
                       <p className="text-gray-900 whitespace-no-wrap">
                         <strong>Username:</strong> {user.username}
                       </p>
                     </td>
-                    <td className="hidden xl:table-cell py-5 text-sm">
+                    <td className="hidden xl:table-cell py-5">
                       <p className="text-gray-900 whitespace-no-wrap">
                         <strong>First Name:</strong> {user.firstName}
                       </p>
                     </td>
-                    <td className="hidden xl:table-cell py-5 text-sm">
+                    <td className="hidden xl:table-cell py-5">
                       <p className="text-gray-900 whitespace-no-wrap">
                         <strong>Last Name:</strong> {user.lastName}
                       </p>
                     </td>
-                    <td className="hidden md:table-cell text-center py-5 text-sm">
+                    <td className="hidden md:table-cell text-center py-5 ">
                       <div className="flex justify-around">
                         {user.id !== currentUser && (
                           <AddFriendButton

@@ -17,7 +17,7 @@ export default function FriendListItem({
 
   return (
     <>
-      <td className="px-5 py-5 text-sm">
+      <td className="px-5 py-5">
         <div className="flex items-center">
           <div className="flex-shrink-0 w-20 h-20">
             {friend.profilePictureUrl ? (
