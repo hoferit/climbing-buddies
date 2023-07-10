@@ -1,15 +1,20 @@
 'use client';
 import { UserRelationship } from '@prisma/client';
 import { useSnackbar } from 'notistack';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { fetchWithAuthCheck } from '../../../../utils/fetchwithauthcheck';
 import FriendRequestItem from './FriendRequestItem';
 
-export default function FriendRequestList() {
+interface FriendRequestListProps {
+  setTriggerFetch: Dispatch<SetStateAction<boolean>>;
+}
+
+export default function FriendRequestList({
+  setTriggerFetch,
+}: FriendRequestListProps) {
   const [loading, setLoading] = useState(true);
   const [friendRequests, setFriendRequests] = useState<UserRelationship[]>([]);
   const { enqueueSnackbar } = useSnackbar();
-
   useEffect(() => {
     async function fetchFriendRequests() {
       try {
@@ -48,6 +53,8 @@ export default function FriendRequestList() {
         setFriendRequests((prevRequests) =>
           prevRequests.filter((request) => request.user_first_id !== friendId),
         );
+        setTriggerFetch(true);
+
         enqueueSnackbar('Friend request accepted!', { variant: 'success' });
       } else {
         const errorData = await response.json();

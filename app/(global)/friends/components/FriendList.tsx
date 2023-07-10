@@ -2,11 +2,19 @@
 import { User } from '@prisma/client';
 import { notFound } from 'next/navigation';
 import { useSnackbar } from 'notistack';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { fetchWithAuthCheck } from '../../../../utils/fetchwithauthcheck';
 import FriendListItem from './FriendListItem';
 
-export default function FriendList() {
+interface FriendListProps {
+  triggerFetch: boolean;
+  setTriggerFetch: Dispatch<SetStateAction<boolean>>;
+}
+
+export default function FriendList({
+  triggerFetch,
+  setTriggerFetch,
+}: FriendListProps) {
   const [loading, setLoading] = useState(true);
   const [friends, setFriends] = useState<User[]>([]);
   const { enqueueSnackbar } = useSnackbar();
@@ -39,7 +47,8 @@ export default function FriendList() {
     }
 
     fetchFriendList().catch(() => {}); // dummy catch for ESLint
-  }, []);
+    setTriggerFetch(false);
+  }, [setTriggerFetch, triggerFetch]);
 
   const handleRemoveFriend = async (friendId: number) => {
     try {
