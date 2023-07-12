@@ -79,63 +79,57 @@ export default function UserList() {
             <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               User List
             </h1>
-            <table className="w-full table-auto">
-              <tbody className="divide-y divide-gray-200">
-                {users.map((user, index) => (
-                  <tr
-                    key={`user-tr-${user.id}`}
-                    className={index % 2 === 0 ? 'bg-white' : 'bg-grey-50'}
-                  >
-                    <td className="px-5 py-5">
-                      <div className="flex items-center">
-                        <div className="flex-shrink-0 w-20 h-20">
-                          {user.profilePictureUrl ? (
-                            <Link href={`/users/${user.username}`}>
-                              <Image
-                                className="w-full h-full rounded-full"
-                                alt="uploaded"
-                                src={user.profilePictureUrl}
-                                unoptimized={true}
-                                priority={true}
-                                width={100}
-                                height={100}
-                              />
-                            </Link>
-                          ) : (
-                            <p>No profile picture available</p>
-                          )}
-                        </div>
-                      </div>
-                    </td>
-                    <td className="py-5">
+            <div className="grid grid-cols-2 gap-6">
+              {users.map((user, index) => (
+                <div
+                  key={`user-div-${user.id}`}
+                  className={`bg-white rounded-lg shadow-lg p-5 ${
+                    index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+                  }`}
+                >
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0 w-20 h-28">
+                      {user.profilePictureUrl ? (
+                        <Link href={`/users/${user.username}`}>
+                          <Image
+                            alt="profile picture"
+                            src={user.profilePictureUrl}
+                            unoptimized={true}
+                            width={200}
+                            height={200}
+                          />
+                        </Link>
+                      ) : (
+                        <p>No profile picture available</p>
+                      )}
+                    </div>
+                    <div className="ml-5 flex-grow">
                       <p className="text-gray-900 whitespace-no-wrap">
                         <strong>Username:</strong> {user.username}
                       </p>
-                    </td>
-                    <td className="hidden xl:table-cell py-5">
                       <p className="text-gray-900 whitespace-no-wrap">
                         <strong>First Name:</strong> {user.firstName}
                       </p>
-                    </td>
-                    <td className="hidden xl:table-cell py-5">
                       <p className="text-gray-900 whitespace-no-wrap">
                         <strong>Last Name:</strong> {user.lastName}
                       </p>
-                    </td>
-                    <td className="hidden md:table-cell text-center py-5 ">
-                      <div className="flex justify-around">
-                        {user.id !== currentUser && (
-                          <AddFriendButton
-                            userId={currentUser ?? 0}
-                            friendId={user.id}
-                          />
-                        )}
+                      <p className="text-gray-900 whitespace-no-wrap">
+                        <strong>Climbing Level:</strong>{' '}
+                        {user.climbingLevel?.toLowerCase()}
+                      </p>
+                    </div>
+                    {user.id !== currentUser && (
+                      <div className="mt-2 flex-shrink-0">
+                        <AddFriendButton
+                          userId={currentUser ?? 0}
+                          friendId={user.id}
+                        />
                       </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

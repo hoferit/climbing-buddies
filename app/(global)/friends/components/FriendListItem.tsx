@@ -19,11 +19,10 @@ export default function FriendListItem({
     <>
       <td className="px-5 py-5">
         <div className="flex items-center">
-          <div className="flex-shrink-0 w-20 h-20">
+          <div className="flex-shrink-0 w-20 h-28">
             {friend.profilePictureUrl ? (
               <Link href={`/users/${friend.username}`}>
                 <Image
-                  className="w-full h-full rounded-full"
                   src={friend.profilePictureUrl}
                   alt={`Profile Picture of ${friend.username}`}
                   priority={true}
@@ -56,7 +55,7 @@ export default function FriendListItem({
       </td>
       <td className="text-center py-5">
         <button
-          className="bg-primary text-secondary hover:bg-secondary hover:text-primary border border-input focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+          className="bg-primary text-secondary hover:bg-secondary hover:text-primary border border-input focus:ring-4 font-medium rounded-lg text-xs px-4 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
           onClick={handleRemoveFriend}
         >
           Remove Friend

@@ -74,7 +74,7 @@ export default function UserProfile() {
               Climbing Level:
             </p>
             <p className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5">
-              {user?.climbingLevel}
+              {user?.climbingLevel?.toLowerCase()}
             </p>
           </div>
         </div>

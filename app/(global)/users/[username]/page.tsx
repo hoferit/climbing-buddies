@@ -45,7 +45,9 @@ export default async function ProfileUsernamePage({ params }: Props) {
                 <h2 className="text-lg font-medium text-gray-600 dark:text-white">
                   Climbing Level
                 </h2>
-                <p className="text-gray-900 text-xl">{user.climbingLevel}</p>
+                <p className="text-gray-900 text-xl">
+                  {user.climbingLevel?.toLowerCase()}
+                </p>
               </div>
             </div>
           </div>

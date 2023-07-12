@@ -95,22 +95,24 @@ export default function FriendList({
               Your Friends
             </h2>
             {friends.length > 0 ? (
-              <table className="w-full table-auto">
-                <tbody className="divide-y divide-gray-200">
-                  {friends.map((friend, index) => (
-                    <tr
-                      key={`user-tr-${friend.id}`}
-                      className={index % 2 === 0 ? 'bg-white' : 'bg-grey-50'}
-                    >
+              <div className="grid grid-cols-2 gap-6">
+                {friends.map((friend, index) => (
+                  <div
+                    key={`friend-div-${friend.id}`}
+                    className={`bg-white rounded-lg shadow-lg p-5 ${
+                      index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+                    }`}
+                  >
+                    <div className="flex items-center">
                       <FriendListItem
                         key={`friend-${friend.id}`}
                         friend={friend}
                         onRemoveFriend={handleRemoveFriend}
                       />
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                    </div>
+                  </div>
+                ))}
+              </div>
             ) : (
               <p className="text-center">No friends yet.</p>
             )}

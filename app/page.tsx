@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 export default function Home() {
   return (
-    <section className="bg-primary-background dark:bg-gray-900 mb-auto min-h-screen">
+    <section className="bg-primary-background dark:bg-gray-900 mb-12 min-h-screen">
       <div className="flex flex-col items-center justify-center px-6 mx-auto  text-center">
         <Image
           alt="climbing buddies logo"

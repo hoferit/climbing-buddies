@@ -36,10 +36,10 @@ export default function FriendRequestItem({
   return (
     <li key={`friend-request-${friendRequest.id}`} className="py-5">
       <div className="flex items-center">
-        <div className="flex-shrink-0 w-20 h-20">
+        <div className="flex-shrink-0 w-20 h-28">
           {!!friendRequest.user_first.profilePictureUrl && (
             <Image
-              className="w-full h-full rounded-full"
+              className="w-full h-full"
               src={friendRequest.user_first.profilePictureUrl}
               alt="Profile Picture"
               priority={true}
@@ -54,13 +54,19 @@ export default function FriendRequestItem({
             <strong>Username:</strong> {friendRequest.user_first.username}
           </p>
           <p className="text-gray-900 whitespace-no-wrap">
+            <strong>First Name:</strong> {friendRequest.user_first.firstName}
+          </p>
+          <p className="text-gray-900 whitespace-no-wrap">
+            <strong>Last Name:</strong> {friendRequest.user_first.lastName}
+          </p>
+          <p className="text-gray-900 whitespace-no-wrap">
             <strong>Climbing level:</strong>{' '}
             {friendRequest.user_first.climbingLevel}
           </p>
         </div>
         <div className="ml-auto">
           <button
-            className=" bg-primary text-secondary hover:bg-secondary hover:text-primary border border-input focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+            className=" bg-primary text-secondary hover:bg-secondary hover:text-primary border-2 border-green-500 border-input focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
             onClick={handleAccept}
           >
             Accept
