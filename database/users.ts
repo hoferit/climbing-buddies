@@ -99,6 +99,8 @@ export async function updateUserById(
   id: number,
   data: Partial<User>,
 ): Promise<User | null> {
+  console.log(`Data: `, data);
+
   try {
     const updatedUser = await prisma.user.update({
       where: {
@@ -111,7 +113,6 @@ export async function updateUserById(
         profilePictureUrl: data.profilePictureUrl,
       },
     });
-
     return updatedUser;
   } catch (error) {
     return null;

@@ -15,7 +15,7 @@ type UpdateUserBody = {
 const updateUserSchema = z.object({
   firstName: z.string().nullable(),
   lastName: z.string().nullable(),
-  climbingLevel: z.string().nullable(),
+  climbingLevel: z.enum(['BEGINNER', 'ADVANCED', 'PRO']).nullable(),
   profilePictureUrl: z.string().nullable(),
 });
 
@@ -64,6 +64,8 @@ export async function PUT(
   }
 
   // 3. Update the user in the database
+  console.log('Session User Id:', session.userId);
+
   const updatedUser = await updateUserById(session.userId, result.data);
 
   if (!updatedUser) {

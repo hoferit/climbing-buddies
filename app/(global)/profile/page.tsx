@@ -1,13 +1,14 @@
 import { cookies } from 'next/headers';
 import { getValidSessionByToken } from '../../../database/sessions';
-import { EditProfileForm } from './ProfileForm';
+import UserProfileAndForm from './UserProfileAndForm';
 
-export default async function profilePage() {
+export default async function ProfilePage() {
   const sessionTokenCookie = cookies().get('sessionToken');
   // 2. check if the sessionToken has a valid session
   const session =
     sessionTokenCookie &&
     (await getValidSessionByToken(sessionTokenCookie.value));
+
   return (
     <main>
       {!session ? (
@@ -21,7 +22,7 @@ export default async function profilePage() {
           </div>
         </section>
       ) : (
-        <EditProfileForm />
+        <UserProfileAndForm />
       )}
     </main>
   );

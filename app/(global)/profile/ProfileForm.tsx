@@ -17,7 +17,7 @@ type ProfileInputs = {
 const schema = z.object({
   firstName: z.string(),
   lastName: z.string(),
-  climbingLevel: z.string(),
+  climbingLevel: z.enum(['BEGINNER', 'ADVANCED', 'PRO']),
   profilePictureUrl: z.string(),
 });
 
@@ -91,7 +91,7 @@ export function EditProfileForm() {
 
   return (
     <SnackbarProvider>
-      <section className="bg-primary-background dark:bg-gray-900 mt-16">
+      <section className="bg-primary-background dark:bg-gray-900">
         <div className="flex flex-col items-center justify-center px-6 mx-auto">
           <div className="w-full bg-white rounded-lg shadow dark:border mt-0 max-w-md  dark:bg-gray-800 dark:border-gray-700">
             <div className="p-8 space-y-4">
@@ -139,19 +139,23 @@ export function EditProfileForm() {
                   </span>
                 )}
                 <label
-                  htmlFor="climbinglevel"
+                  htmlFor="climbingLevel"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Climbing Level:
                 </label>
-                <input
-                  id="climbinglevel"
-                  type="number"
+                <select
+                  id="climbingLevel"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
                   {...register('climbingLevel')}
-                />
+                >
+                  <option value="">Select your level</option>
+                  <option value="BEGINNER">Beginner</option>
+                  <option value="ADVANCED">Advanced</option>
+                  <option value="PRO">Pro</option>
+                </select>
                 {errors.climbingLevel && (
-                  <span className="test-red-800 block mt-2">
+                  <span className="text-red-800 block mt-2">
                     {errors.climbingLevel.message}
                   </span>
                 )}

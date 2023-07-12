@@ -2,7 +2,6 @@
 
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["jsonProtocol"]
 }
 
 datasource db {
@@ -12,27 +11,34 @@ datasource db {
   shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations
 
 }
+
 model User {
-  id                       Int                @id @default(autoincrement())
-  username                 String             @unique
-  firstName                String?
-  lastName                 String?
-  email                    String             @unique
-  passwordHash             String
-  climbingLevel            String?
-  profilePictureUrl        String?
-  createdAt                DateTime           @default(now())
-  updatedAt                DateTime           @updatedAt
-  deletedAt                DateTime?
-  eventsOrganised          Event[]
-  eventParticipants        EventParticipant[] @relation("UserEvents")
-  sessions                 Session[]          // each user can have multiple sessions
+  id                         Int                @id @default(autoincrement())
+  username                   String             @unique
+  firstName                  String?
+  lastName                   String?
+  email                      String             @unique
+  passwordHash               String
+  climbingLevel              ClimbingLevel?
+  profilePictureUrl          String?
+  createdAt                  DateTime           @default(now())
+  updatedAt                  DateTime           @updatedAt
+  deletedAt                  DateTime?
+  eventsOrganised            Event[]
+  eventParticipants          EventParticipant[] @relation("UserEvents")
+  sessions                   Session[]          // each user can have multiple sessions
 
   // Relation to UserRelationship as the first user
   userRelationshipsAsFirstUser UserRelationship[] @relation("UserRelationshipsAsFirstUser")
 
   // Relation to UserRelationship as the second user
   userRelationshipsAsSecondUser UserRelationship[] @relation("UserRelationshipsAsSecondUser")
+}
+
+enum ClimbingLevel {
+  BEGINNER
+  ADVANCED
+  PRO
 }
 
 model UserRelationship {
