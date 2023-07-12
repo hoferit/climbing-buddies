@@ -28,7 +28,7 @@ export function EditProfileForm() {
     const fetchUserData = async () => {
       try {
         // Make the API call to fetch user data
-        const response = await fetch('/api/user');
+        const response = await fetch('/api/getcurrentuserdata');
         const data = await response.json();
         setUserData(data.user);
       } catch (error) {

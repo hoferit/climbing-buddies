@@ -1,7 +1,16 @@
+import Image from 'next/image';
+
 export default function Home() {
   return (
-    <section className="bg-primary-background dark:bg-gray-900">
-      <div className="flex flex-col items-center justify-center px-6 mx-auto min-h-screen text-center space-y-8">
+    <section className="bg-primary-background dark:bg-gray-900 mb-auto min-h-screen">
+      <div className="flex flex-col items-center justify-center px-6 mx-auto  text-center">
+        <Image
+          alt="climbing buddies logo"
+          src="/cblogo.png"
+          height={500}
+          width={500}
+          unoptimized={true}
+        />
         <h1 className="text-4xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white mb-6">
           Welcome to Climbing Buddies!
         </h1>

@@ -1,9 +1,9 @@
 import './globals.css';
-import { Inter } from 'next/font/google';
+import { Nunito_Sans } from 'next/font/google';
 import Footer from '../components/layout/Footer';
 import Header from '../components/layout/Header';
 
-const inter = Inter({ subsets: ['latin'], preload: true });
+const nunitoSans = Nunito_Sans({ subsets: ['latin'], preload: true });
 
 export const metadata = {
   title: {
@@ -20,10 +20,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <Header />
-        {children}
-        <Footer />
+      <body className={nunitoSans.className}>
+        <div className="min-h-screen">
+          <Header />
+          {children}
+          <Footer />
+        </div>
       </body>
     </html>
   );
