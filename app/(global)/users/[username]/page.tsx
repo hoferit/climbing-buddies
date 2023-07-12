@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { getUserByUsername } from '../../../../database/users';
 
@@ -20,9 +21,11 @@ export default async function ProfileUsernamePage({ params }: Props) {
             <h1 className="text-2xl font-bold text-center leading-tight tracking-tight text-gray-900 dark:text-white">
               User Profile
             </h1>
-            <img
+            <Image
               src={user.profilePictureUrl || 'default.jpg'}
               alt="Profile"
+              height={200}
+              width={200}
               className="object-cover w-32 h-32 rounded-full mx-auto mb-6"
             />
             <div className="space-y-4">

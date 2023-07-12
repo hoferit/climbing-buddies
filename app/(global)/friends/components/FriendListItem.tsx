@@ -26,6 +26,8 @@ export default function FriendListItem({
                   className="w-full h-full rounded-full"
                   src={friend.profilePictureUrl}
                   alt={`Profile Picture of ${friend.username}`}
+                  priority={true}
+                  unoptimized={true}
                   width={100}
                   height={100}
                 />

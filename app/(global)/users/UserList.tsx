@@ -96,6 +96,7 @@ export default function UserList() {
                                 alt="uploaded"
                                 src={user.profilePictureUrl}
                                 unoptimized={true}
+                                priority={true}
                                 width={100}
                                 height={100}
                               />

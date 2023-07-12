@@ -42,6 +42,8 @@ export default function FriendRequestItem({
               className="w-full h-full rounded-full"
               src={friendRequest.user_first.profilePictureUrl}
               alt="Profile Picture"
+              priority={true}
+              unoptimized={true}
               width={100}
               height={100}
             />
