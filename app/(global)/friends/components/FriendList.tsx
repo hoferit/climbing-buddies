@@ -87,7 +87,7 @@ export default function FriendList({
   }
 
   return (
-    <section className="bg-primary-background dark:bg-gray-900 my-6">
+    <section className="bg-primary-background dark:bg-gray-900 my-6 w-11/12">
       <div className="flex flex-col items-center justify-center px-6 mx-auto">
         <div className="w-full bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
@@ -103,13 +103,11 @@ export default function FriendList({
                       index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
                     }`}
                   >
-                    <div className="flex items-center">
-                      <FriendListItem
-                        key={`friend-${friend.id}`}
-                        friend={friend}
-                        onRemoveFriend={handleRemoveFriend}
-                      />
-                    </div>
+                    <FriendListItem
+                      key={`friend-${friend.id}`}
+                      friend={friend}
+                      onRemoveFriend={handleRemoveFriend}
+                    />
                   </div>
                 ))}
               </div>

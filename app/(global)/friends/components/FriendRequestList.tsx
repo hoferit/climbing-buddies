@@ -116,22 +116,23 @@ export default function FriendRequestList({
   }
 
   return (
-    <section className="bg-primary-background dark:bg-gray-900 mb-6">
-      <div className="flex flex-col items-center justify-center px-6 mx-auto">
+    <section className="bg-primary-background dark:bg-gray-900 mb-6 w-5/12">
+      <div className="flex flex-col items-start justify-center px-6 mx-auto max-w-sm">
         <div className="w-full bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h2 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+            <h2 className="text-lg text-center font-bold leading-tight tracking-tight text-gray-900 md:text-xl dark:text-white">
               Friend Requests
             </h2>
             {friendRequests.length > 0 ? (
               <ul className="divide-y divide-gray-200">
                 {friendRequests.map((request) => (
-                  <FriendRequestItem
-                    key={`friend-${request.id}`}
-                    friendRequest={request as any}
-                    onAccept={handleAcceptFriendRequest}
-                    onReject={handleRejectFriendRequest}
-                  />
+                  <li key={`friend-${request.id}`}>
+                    <FriendRequestItem
+                      friendRequest={request as any}
+                      onAccept={handleAcceptFriendRequest}
+                      onReject={handleRejectFriendRequest}
+                    />
+                  </li>
                 ))}
               </ul>
             ) : (

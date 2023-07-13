@@ -105,9 +105,6 @@ export default function UserList() {
                     </div>
                     <div className="ml-5 flex-grow">
                       <p className="text-gray-900 whitespace-no-wrap">
-                        <strong>Username:</strong> {user.username}
-                      </p>
-                      <p className="text-gray-900 whitespace-no-wrap">
                         <strong>First Name:</strong> {user.firstName}
                       </p>
                       <p className="text-gray-900 whitespace-no-wrap">

@@ -8,7 +8,7 @@ export function LogoutButton() {
   return (
     <form>
       <button
-        className=" text-sm px-4 py-2 leading-none border rounded text-secondary border-secondary-foreground hover:text-primary-foreground hover:bg-secondary mt-4 lg:mt-0"
+        className=" text-xl px-6 py-4 leading-none border rounded text-secondary border-secondary-foreground hover:text-primary-foreground hover:bg-secondary mt-4 lg:mt-0"
         formAction={async () => {
           await logout();
           router.refresh();

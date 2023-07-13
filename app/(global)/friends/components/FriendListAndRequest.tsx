@@ -8,13 +8,13 @@ export default function FriendListAndRequest() {
   const [triggerFetch, setTriggerFetch] = useState<boolean>(false);
 
   return (
-    <div>
+    <div className="flex justify-between">
       <SnackbarProvider maxSnack={3}>
-        <FriendRequestList setTriggerFetch={setTriggerFetch} />
         <FriendList
           triggerFetch={triggerFetch}
           setTriggerFetch={setTriggerFetch}
         />
+        <FriendRequestList setTriggerFetch={setTriggerFetch} />
       </SnackbarProvider>
     </div>
   );

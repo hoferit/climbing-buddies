@@ -2,15 +2,8 @@ import Image from 'next/image';
 
 export default function Home() {
   return (
-    <section className="bg-primary-background dark:bg-gray-900 mb-12 min-h-screen">
+    <section className="bg-primary-background dark:bg-gray-900 mb-12 mt-6 min-h-screen">
       <div className="flex flex-col items-center justify-center px-6 mx-auto  text-center">
-        <Image
-          alt="climbing buddies logo"
-          src="/cblogo.png"
-          height={500}
-          width={500}
-          unoptimized={true}
-        />
         <h1 className="text-4xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white mb-6">
           Welcome to Climbing Buddies!
         </h1>
@@ -19,6 +12,26 @@ export default function Home() {
           Find your perfect climbing partner, explore gyms, plan events, and
           share your climbing experiences.
         </p>
+        <div className="relative mb-6">
+          {' '}
+          <Image
+            alt="moungain"
+            src="/mountain.jpg"
+            height={1200}
+            width={1200}
+            unoptimized={true}
+            className="w-full h-screen object-cover"
+          />
+          <Image
+            alt="climbing buddies logo"
+            src="/cblogo.png"
+            unoptimized={true}
+            width={400}
+            height={400}
+            className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+          />
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
