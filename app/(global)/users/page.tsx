@@ -2,6 +2,11 @@ import { cookies } from 'next/headers';
 import { getValidSessionByToken } from '../../../database/sessions';
 import UserList from './UserList';
 
+export const metadata = {
+  title: 'Users',
+  description: 'All Users of Climbing Buddies',
+};
+
 export default async function usersPage() {
   const sessionTokenCookie = cookies().get('sessionToken');
   // 2. check if the sessionToken has a valid session

@@ -5,6 +5,11 @@ import { LoginForm } from './LoginForm';
 
 type Props = { searchParams: { returnTo?: string | string[] } };
 
+export const metadata = {
+  title: 'Login',
+  description: 'Login to use features',
+};
+
 export default async function LoginPage({ searchParams }: Props) {
   // if the user is logged in redirect
 

@@ -1,5 +1,10 @@
 import { RegistrationForm } from './RegistrationForm';
 
+export const metadata = {
+  title: 'Register',
+  description: 'Register a user for Climbing Buddies',
+};
+
 export default function RegisterPage() {
   return (
     <main>

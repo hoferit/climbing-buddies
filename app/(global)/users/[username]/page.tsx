@@ -6,6 +6,11 @@ type Props = {
   params: { username: string };
 };
 
+export const metadata = {
+  title: 'User',
+  description: 'User Profile Page',
+};
+
 export default async function ProfileUsernamePage({ params }: Props) {
   const user = await getUserByUsername(params.username);
 

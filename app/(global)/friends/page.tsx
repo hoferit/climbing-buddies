@@ -2,6 +2,11 @@ import { cookies } from 'next/headers';
 import { getValidSessionByToken } from '../../../database/sessions';
 import FriendListAndRequest from './components/FriendListAndRequest';
 
+export const metadata = {
+  title: 'Friends',
+  description: 'View your Friends and Friend Requests',
+};
+
 export default async function FriendsPage() {
   const sessionTokenCookie = cookies().get('sessionToken');
   // 2. check if the sessionToken has a valid session

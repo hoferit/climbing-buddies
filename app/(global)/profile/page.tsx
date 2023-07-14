@@ -2,6 +2,11 @@ import { cookies } from 'next/headers';
 import { getValidSessionByToken } from '../../../database/sessions';
 import UserProfileAndForm from './UserProfileAndForm';
 
+export const metadata = {
+  title: 'Profile',
+  description: 'Your User Profile',
+};
+
 export default async function ProfilePage() {
   const sessionTokenCookie = cookies().get('sessionToken');
   // 2. check if the sessionToken has a valid session
