@@ -1,70 +1,51 @@
-import Image from 'next/image';
-
 export default function Home() {
   return (
-    <section className="bg-primary-background dark:bg-gray-900 mb-12 mt-6 min-h-screen">
-      <div className="flex flex-col items-center justify-center px-6 mx-auto  text-center">
-        <h1 className="text-4xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white mb-6">
-          Welcome to Climbing Buddies!
+    <section
+      className="relative min-h-screen flex flex-col bg-primary-background dark:bg-gray-900 text-secondary"
+      style={{
+        backgroundImage: "url('/mountain.jpg')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
+      <div className="relative flex flex-col justify-end px-6 mx-auto text-center bg-black bg-opacity-30">
+        <h1 className="text-8xl font-bold leading-tight tracking-tight mb-6">
+          Welcome to
         </h1>
-        <p className="text-gray-900 dark:text-white text-xl mb-6 max-w-prose mx-auto">
+        <h1 className="text-8xl font-bold leading-tight tracking-tight mb-6">
+          Climbing Buddies!
+        </h1>
+        <p className="text-2xl mb-6 max-w-prose mx-auto">
           Your ultimate platform to connect with climbers from around the world.
           Find your perfect climbing partner, explore gyms, plan events, and
           share your climbing experiences.
         </p>
-        <div className="relative mb-6">
-          {' '}
-          <Image
-            alt="moungain"
-            src="/mountain.jpg"
-            height={1200}
-            width={1200}
-            unoptimized={true}
-            className="w-full h-screen object-cover"
-          />
-          <Image
-            alt="climbing buddies logo"
-            src="/cblogo.png"
-            unoptimized={true}
-            width={400}
-            height={400}
-            className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-          />
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-              Make Friends
-            </h2>
-            <p className="text-gray-900 dark:text-white text-xl">
+            <h2 className="text-3xl font-bold">Make Friends</h2>
+            <p className="text-xl">
               Browse the user list, add friends and respond to friend requests.
               Connect with climbers in your area or around the world.
             </p>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-              Discover Gyms
-            </h2>
-            <p className="text-gray-900 dark:text-white text-xl">
+            <h2 className="text-3xl font-bold">Discover Gyms</h2>
+            <p className="text-xl">
               Explore our gym page featuring a list of climbing gyms. Find your
               next climbing destination.
             </p>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-              Event Calendar
-            </h2>
-            <p className="text-gray-900 dark:text-white text-xl">
+            <h2 className="text-3xl font-bold">Event Calendar</h2>
+            <p className="text-xl">
               Plan climbing events and invite friends. Sync up your climbing
               schedules and never climb alone again.
             </p>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-              Chat and Connect
-            </h2>
-            <p className="text-gray-900 dark:text-white text-xl">
+            <h2 className="text-3xl font-bold">Chat and Connect</h2>
+            <p className="text-xl">
               Our upcoming feature: a chat function for real-time conversation
               with your friends. Connect beyond climbing.
             </p>

@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={nunitoSans.className}>
-        <div className="min-h-screen">
+        <div>
           <Header />
           {children}
           <Footer />

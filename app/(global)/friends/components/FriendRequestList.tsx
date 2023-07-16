@@ -116,7 +116,7 @@ export default function FriendRequestList({
   }
 
   return (
-    <section className="bg-primary-background dark:bg-gray-900 mb-6 w-5/12">
+    <section className="bg-primary-background dark:bg-gray-900 w-5/12">
       <div className="flex flex-col items-start justify-center px-6 mx-auto max-w-sm">
         <div className="w-full bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">

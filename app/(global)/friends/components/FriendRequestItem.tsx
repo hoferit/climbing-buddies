@@ -49,10 +49,15 @@ export default function FriendRequestItem({
           )}
         </div>
       </div>
-      <div className="flex flex-col items-end">
-        <div className="mb-2">
+      <div className="flex flex-col items-start">
+        <div className="mb-2 mt-4">
           <p className="text-gray-900 whitespace-no-wrap text-sm">
-            <strong>Username:</strong> {friendRequest.user_first.username}
+            <strong>First Name:</strong> {friendRequest.user_first.firstName}
+          </p>
+        </div>
+        <div className="mb-6">
+          <p className="text-gray-900 whitespace-no-wrap text-sm">
+            <strong>Last Name:</strong> {friendRequest.user_first.lastName}
           </p>
         </div>
         <div className="flex items-center">

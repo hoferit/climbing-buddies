@@ -122,7 +122,8 @@ export async function retrieveFriendRequests(userId: number) {
         user_first: {
           select: {
             id: true,
-            username: true,
+            firstName: true,
+            lastName: true,
             profilePictureUrl: true,
             climbingLevel: true,
           },

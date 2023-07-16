@@ -57,7 +57,7 @@ export function LoginForm(props: Props) {
   };
 
   return (
-    <section className="bg-primary-background dark:bg-gray-900">
+    <section className="bg-primary-background min-h-screen my-6 dark:bg-gray-900">
       <SnackbarProvider />
       <div className="flex flex-col items-center justify-center px-6 mx-auto h-screen">
         <div className="w-full bg-white rounded-lg shadow dark:border mt-0 sm:max-w-md dark:bg-gray-800 dark:border-gray-700">

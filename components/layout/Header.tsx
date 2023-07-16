@@ -15,7 +15,7 @@ export default async function Header() {
 
   return (
     <header>
-      <nav className="flex items-center justify-between flex-wrap bg-primary p-6 mb-4">
+      <nav className="flex items-center justify-between flex-wrap bg-primary p-6">
         <div className="flex items-center flex-shrink-0 text-secondary mr-6">
           <Link
             className="font-bold text-2xl tracking-tight flex items-center"
@@ -24,9 +24,10 @@ export default async function Header() {
             <Image
               src="/cblogo.png"
               alt="climbing buddies logo"
-              width={140}
-              height={140}
+              width={178}
+              height={100}
               unoptimized={true}
+              priority={true}
             />
             <span className="ml-6">Climbing Buddies</span>
           </Link>

@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function RegisterPage() {
   return (
-    <main>
+    <main className="min-h-screen my-6">
       <section className="md:container md:mx-auto">
         <RegistrationForm />
       </section>
