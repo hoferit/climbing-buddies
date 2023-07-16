@@ -8,7 +8,9 @@ export default function Home() {
         backgroundPosition: 'center',
       }}
     >
-      <div className="relative flex flex-col justify-end px-6 mx-auto text-center bg-black bg-opacity-30">
+      <div className="absolute inset-0 bg-black bg-opacity-30" />
+
+      <div className="relative flex z-10 flex-col justify-end px-6 mx-auto text-center mt-4 mb-6">
         <h1 className="text-8xl font-bold leading-tight tracking-tight mb-6">
           Welcome to
         </h1>
