@@ -93,7 +93,7 @@ export function EditProfileForm() {
     <SnackbarProvider>
       <section className="bg-primary-background dark:bg-gray-900">
         <div className="flex flex-col items-center justify-center px-6 mx-auto">
-          <div className="w-full bg-white rounded-lg shadow dark:border mt-0 max-w-md  dark:bg-gray-800 dark:border-gray-700">
+          <div className="w-full overflow-hidden bg-white rounded-lg shadow dark:border mt-0 max-w-xl  dark:bg-gray-800 dark:border-gray-700">
             <div className="p-8 space-y-4">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Your Profile
