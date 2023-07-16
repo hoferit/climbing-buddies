@@ -12,8 +12,8 @@ Future enhancements include an event creation feature for organizing climbing me
 
 Join Climbing Buddies to expand your climbing network, plan exciting climbing events, and enjoy the vibrant climbing community of Vienna!
 
-Database Schema: https://drawsql.app/teams/michaels-team-21/diagrams/climbing-buddies
-Wireframe on Figma: https://www.figma.com/file/9OsS9OQRaWmXr9tfTiDy1W/Climbing-Buddies?type=design&node-id=77%3A432&mode=design&t=ZyrVCE5JiGSLQPpd-1
+- **Database Schema:** [DrawSQL Diagram](https://drawsql.app/teams/michaels-team-21/diagrams/climbing-buddies)
+- **Wireframe on Figma:** [Figma Design](https://www.figma.com/file/9OsS9OQRaWmXr9tfTiDy1W/Climbing-Buddies?type=design&node-id=77%3A432&mode=design&t=ZyrVCE5JiGSLQPpd-1)
 
 ## Technologies Used
 
