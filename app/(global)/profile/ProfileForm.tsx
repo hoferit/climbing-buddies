@@ -13,6 +13,7 @@ type ProfileInputs = {
   climbingLevel: string;
   profilePictureUrl: string;
   dateOfBirth: string;
+  bio: string;
 };
 
 const schema = z.object({
@@ -21,6 +22,7 @@ const schema = z.object({
   climbingLevel: z.enum(['BEGINNER', 'ADVANCED', 'PRO']),
   dateOfBirth: z.string().nonempty({ message: 'Date of Birth is required.' }),
   profilePictureUrl: z.string(),
+  bio: z.string().max(500, 'Bio cannot exceed 500 characters.'),
 });
 
 export function EditProfileForm() {
@@ -62,6 +64,7 @@ export function EditProfileForm() {
         'dateOfBirth',
         userData.dateOfBirth?.toISOString().split('T')[0] || '',
       );
+      setValue('bio', userData.bio || '');
       setValue('profilePictureUrl', userData.profilePictureUrl || '');
     }
   }, [userData, setValue]);
@@ -161,6 +164,23 @@ export function EditProfileForm() {
                     {errors.dateOfBirth.message}
                   </span>
                 )}
+                <label
+                  htmlFor="bio"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Bio:
+                </label>
+                <textarea
+                  id="bio"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
+                  {...register('bio')}
+                />
+                {errors.bio && (
+                  <span className="test-red-800 block mt-2">
+                    {errors.bio.message}
+                  </span>
+                )}
+
                 <label
                   htmlFor="climbingLevel"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"

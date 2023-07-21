@@ -11,6 +11,7 @@ type PublicUser = {
   climbingLevel: string | null;
   dateOfBirth: Date | null;
   profilePictureUrl: string | null;
+  bio: string | null;
 };
 
 export type UserResponseBodyGet = {

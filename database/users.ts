@@ -67,6 +67,7 @@ export const getUserById = async (id: number) => {
         lastName: true,
         climbingLevel: true,
         dateOfBirth: true,
+        bio: true,
         profilePictureUrl: true,
       },
     });
