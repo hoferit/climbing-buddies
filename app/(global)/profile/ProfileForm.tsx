@@ -12,12 +12,14 @@ type ProfileInputs = {
   lastName: string;
   climbingLevel: string;
   profilePictureUrl: string;
+  dateOfBirth: string;
 };
 
 const schema = z.object({
   firstName: z.string(),
   lastName: z.string(),
   climbingLevel: z.enum(['BEGINNER', 'ADVANCED', 'PRO']),
+  dateOfBirth: z.string().nonempty({ message: 'Date of Birth is required.' }),
   profilePictureUrl: z.string(),
 });
 
@@ -56,6 +58,10 @@ export function EditProfileForm() {
       setValue('firstName', userData.firstName || '');
       setValue('lastName', userData.lastName || '');
       setValue('climbingLevel', userData.climbingLevel || '');
+      setValue(
+        'dateOfBirth',
+        userData.dateOfBirth?.toISOString().split('T')[0] || '',
+      );
       setValue('profilePictureUrl', userData.profilePictureUrl || '');
     }
   }, [userData, setValue]);
@@ -136,6 +142,23 @@ export function EditProfileForm() {
                 {errors.lastName && (
                   <span className="test-red-800 block mt-2">
                     {errors.lastName.message}
+                  </span>
+                )}
+                <label
+                  htmlFor="dateOfBirth"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Date of Birth:
+                </label>
+                <input
+                  id="dateOfBirth"
+                  type="date"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
+                  {...register('dateOfBirth')}
+                />
+                {errors.dateOfBirth && (
+                  <span className="test-red-800 block mt-2">
+                    {errors.dateOfBirth.message}
                   </span>
                 )}
                 <label

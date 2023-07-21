@@ -9,6 +9,7 @@ type PublicUser = {
   firstName: string | null;
   lastName: string | null;
   climbingLevel: string | null;
+  dateOfBirth: Date | null;
   profilePictureUrl: string | null;
 };
 
