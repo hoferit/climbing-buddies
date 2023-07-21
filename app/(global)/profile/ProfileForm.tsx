@@ -56,14 +56,21 @@ export function EditProfileForm() {
   });
 
   useEffect(() => {
-    if (userData !== null) {
+    if (userData?.dateOfBirth) {
+      userData.dateOfBirth = new Date(userData.dateOfBirth);
+    }
+
+    if (userData) {
       setValue('firstName', userData.firstName || '');
       setValue('lastName', userData.lastName || '');
       setValue('climbingLevel', userData.climbingLevel || '');
       setValue(
         'dateOfBirth',
-        userData.dateOfBirth?.toISOString().split('T')[0] || '',
+        (userData.dateOfBirth !== null
+          ? userData.dateOfBirth.toISOString().split('T')[0]
+          : '') as string,
       );
+
       setValue('bio', userData.bio || '');
       setValue('profilePictureUrl', userData.profilePictureUrl || '');
     }

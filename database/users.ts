@@ -71,6 +71,9 @@ export const getUserById = async (id: number) => {
         profilePictureUrl: true,
       },
     });
+    if (user) {
+      console.log(user.dateOfBirth?.toISOString);
+    }
 
     return user;
   } catch (error) {
@@ -101,8 +104,6 @@ export async function updateUserById(
   id: number,
   data: Partial<User>,
 ): Promise<User | null> {
-  console.log(`Data: `, data);
-
   try {
     const updatedUser = await prisma.user.update({
       where: {
@@ -111,8 +112,10 @@ export async function updateUserById(
       data: {
         firstName: data.firstName,
         lastName: data.lastName,
+        dateOfBirth: data.dateOfBirth,
         climbingLevel: data.climbingLevel,
         profilePictureUrl: data.profilePictureUrl,
+        bio: data.bio,
       },
     });
     return updatedUser;

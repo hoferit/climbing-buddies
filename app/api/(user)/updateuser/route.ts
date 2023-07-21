@@ -9,14 +9,18 @@ type UpdateUserBody = {
   firstName: string | null;
   lastName: string | null;
   climbingLevel: string | null;
+  dateOfBirth: string | null;
   profilePictureUrl: string | null;
+  bio: string | null;
 };
 
 const updateUserSchema = z.object({
   firstName: z.string().nullable(),
   lastName: z.string().nullable(),
   climbingLevel: z.enum(['BEGINNER', 'ADVANCED', 'PRO']).nullable(),
-  profilePictureUrl: z.string().nullable(),
+  dateOfBirth: z.string().nonempty({ message: 'Date of Birth is required.' }),
+  profilePictureUrl: z.string(),
+  bio: z.string().max(500, 'Bio cannot exceed 500 characters.'),
 });
 
 export type UpdateUserResponseBody = {
@@ -64,9 +68,14 @@ export async function PUT(
   }
 
   // 3. Update the user in the database
-  console.log('Session User Id:', session.userId);
+  const updatedData = {
+    ...result.data,
+    dateOfBirth: result.data.dateOfBirth
+      ? new Date(result.data.dateOfBirth)
+      : null,
+  };
 
-  const updatedUser = await updateUserById(session.userId, result.data);
+  const updatedUser = await updateUserById(session.userId, updatedData);
 
   if (!updatedUser) {
     return NextResponse.json(
@@ -85,6 +94,10 @@ export async function PUT(
         lastName: updatedUser.lastName,
         climbingLevel: updatedUser.climbingLevel,
         profilePictureUrl: updatedUser.profilePictureUrl,
+        dateOfBirth: updatedUser.dateOfBirth
+          ? updatedUser.dateOfBirth.toISOString()
+          : null,
+        bio: updatedUser.bio,
       },
     },
     {
