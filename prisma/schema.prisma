@@ -17,8 +17,10 @@ model User {
   username                   String             @unique
   firstName                  String?
   lastName                   String?
+  dateOfBirth                DateTime?
   email                      String             @unique
   passwordHash               String
+  bio                        String?
   climbingLevel              ClimbingLevel?
   profilePictureUrl          String?
   createdAt                  DateTime           @default(now())
@@ -92,6 +94,13 @@ model Style {
   events Event[]
 }
 
+enum EventStatus {
+  UPCOMING
+  ONGOING
+  COMPLETED
+  CANCELLED
+}
+
 model Event {
   id                Int                @id @default(autoincrement())
   title             String
@@ -104,6 +113,7 @@ model Event {
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
   deletedAt         DateTime?
+  status            EventStatus        @default(UPCOMING)
   organiser         User               @relation(fields: [organiserId], references: [id])
   style             Style              @relation(fields: [styleId], references: [id])
   gym               Gym                @relation(fields: [gymId], references: [id])
@@ -111,11 +121,18 @@ model Event {
 }
 
 
+
+enum Role {
+  PARTICIPANT
+  ORGANIZER
+}
+
 model EventParticipant {
   userId  Int
   eventId Int
-  user    User  @relation("UserEvents", fields: [userId], references: [id])
-  event   Event @relation("EventUsers", fields: [eventId], references: [id])
+  role    Role   @default(PARTICIPANT)
+  user    User   @relation("UserEvents", fields: [userId], references: [id])
+  event   Event  @relation("EventUsers", fields: [eventId], references: [id])
 
   @@id([userId, eventId])
 }
