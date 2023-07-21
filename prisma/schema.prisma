@@ -95,8 +95,6 @@ model Event {
   startTime         DateTime
   endTime           DateTime
   gymId             Int
-  gymName           String
-  gymLocation       String
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
   deletedAt         DateTime?
@@ -105,6 +103,7 @@ model Event {
   gym               Gym                @relation(fields: [gymId], references: [id])
   eventParticipants EventParticipant[] @relation("EventUsers")
 }
+
 
 model EventParticipant {
   userId  Int
