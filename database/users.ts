@@ -71,9 +71,6 @@ export const getUserById = async (id: number) => {
         profilePictureUrl: true,
       },
     });
-    if (user) {
-      console.log(user.dateOfBirth?.toISOString);
-    }
 
     return user;
   } catch (error) {
