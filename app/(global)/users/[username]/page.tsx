@@ -75,6 +75,12 @@ export default async function ProfileUsernamePage({ params }: Props) {
                   </div>
                   <div>
                     <h2 className="text-lg font-medium text-gray-600 dark:text-white">
+                      Bio
+                    </h2>
+                    <p className="text-gray-900 text-xl">{user.bio}</p>
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-medium text-gray-600 dark:text-white">
                       Climbing Level
                     </h2>
                     <p className="text-gray-900 text-xl">

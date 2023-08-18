@@ -44,6 +44,7 @@ export const getUserByUsername = async (username: string) => {
         lastName: true,
         climbingLevel: true,
         profilePictureUrl: true,
+        bio: true,
       },
     });
 
@@ -88,6 +89,7 @@ export const getAllUsers = async () => {
         lastName: true,
         climbingLevel: true,
         profilePictureUrl: true,
+        bio: true,
       },
     });
 

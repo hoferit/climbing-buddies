@@ -9,6 +9,7 @@ export type PublicUser = {
   lastName: string | null;
   climbingLevel: string | null;
   profilePictureUrl: string | null;
+  bio: string | null;
 };
 
 export type UsersResponseBodyGet = {
