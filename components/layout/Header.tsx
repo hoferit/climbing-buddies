@@ -60,7 +60,7 @@ export default async function Header() {
             </Link>
             <Link
               className="lock mt-4 lg:inline-block lg:mt-0 text-secondary text-xl hover:text-secondary-foreground mr-4"
-              href="/friends"
+              href="/events"
             >
               Events
             </Link>
